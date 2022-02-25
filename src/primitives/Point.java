@@ -9,10 +9,21 @@ public class Point {
         this.xyz = xyz;
     }
 
+    /**
+     *
+     * @param x x coordinate
+     * @param y y coordinate
+     * @param z z coordinate
+     */
     public Point(double x, double y, double z) {
         this.xyz = new Double3(x, y, z);
     }
 
+    /**
+     *
+     * @param other second vector
+     * @return new vector of
+     */
     public Vector subtract(Point other) {
         return new Vector(this.xyz.subtract(other.xyz));
     }
