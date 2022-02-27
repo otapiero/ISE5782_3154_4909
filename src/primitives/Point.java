@@ -3,7 +3,7 @@ import primitives.*;
 
 public class Point {
 
-    protected Double3 xyz;
+    protected final Double3 xyz;
 
     /**
      * constructor of point by a given double3
