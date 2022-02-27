@@ -5,12 +5,16 @@ public class Point {
 
     protected Double3 xyz;
 
+    /**
+     * constructor of point by a given double3
+     * @param xyz a double3 of the coordinates
+     */
     public Point(Double3 xyz) {
         this.xyz = xyz;
     }
 
     /**
-     *
+     * constructor of point by 3 given double
      * @param x x coordinate
      * @param y y coordinate
      * @param z z coordinate
@@ -20,23 +24,37 @@ public class Point {
     }
 
     /**
-     *
-     * @param other second vector
-     * @return new vector of
+     * sub the point by a point and creat a vector
+     * @param other a point
+     * @return new vector result of this-other
      */
     public Vector subtract(Point other) {
         return new Vector(this.xyz.subtract(other.xyz));
     }
 
+    /**
+     * add a  vector to the point and creat a point
+     * @param vector a vector to add to the point
+     * @return new point result of this+vector
+     */
     public Point add(primitives.Vector vector) {
         return new Point(this.xyz.add(vector.xyz));
     }
 
+    /**
+     * find the distance squared between this point and an other point
+     * @param other second point
+     * @return a double of distance squared between this and other
+     */
     public double distanceSquared(Point other) {
         Double3 temp = this.xyz.subtract(other.xyz);
         return temp.d1 * temp.d1 + temp.d2 * temp.d2 + temp.d3 * temp.d3;
     }
-
+    /**
+     * find the distance  between this point and an other point
+     * @param other second point
+     * @return a double of distance  between this and other
+     */
     public double distance(Point other) {
         return Math.sqrt(distanceSquared(other));
     }

@@ -6,6 +6,11 @@ public class Ray {
     private Point p0;
     private Vector dir;
 
+    /**
+     * constractor of a ray
+     * @param p0 point of the ray
+     * @param dir direction of the ray by a vector
+     */
     public Ray(Point p0, Vector dir) {
         this.p0 = p0;
         this.dir = dir.normalize();
