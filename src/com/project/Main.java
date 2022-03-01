@@ -1,3 +1,6 @@
+//ouriel tapiero 1723154 oht862@gmail.com
+//Haim Goren 207214909 gorenchaim@gmail.com
+
 package com.project;
 
 import primitives.*;
