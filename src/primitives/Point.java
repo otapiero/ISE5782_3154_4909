@@ -29,6 +29,7 @@ public class Point {
      * @return new vector result of this-other
      */
     public Vector subtract(Point other) {
+
         return new Vector(this.xyz.subtract(other.xyz));
     }
 
@@ -37,7 +38,7 @@ public class Point {
      * @param vector a vector to add to the point
      * @return new point result of this+vector
      */
-    public Point add(primitives.Vector vector) {
+    public Point add(Vector vector) {
         return new Point(this.xyz.add(vector.xyz));
     }
 

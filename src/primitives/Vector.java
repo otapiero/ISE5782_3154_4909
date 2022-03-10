@@ -6,7 +6,7 @@ public class Vector extends Point{
      * @param xyz a double3 for the vector
      */
     public Vector(Double3 xyz) {
-        super(xyz);
+        super(xyz.d1, xyz.d2, xyz.d3);
         if (this.xyz.equals(Double3.ZERO))
             throw new IllegalArgumentException("wrong input format ,Vector Zero.");
     }
