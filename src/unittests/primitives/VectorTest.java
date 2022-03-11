@@ -58,7 +58,9 @@ class VectorTest {
 
     @Test
     void testLengthSquared() {
+        assertEquals(14,new Vector(1, 2, 3).lengthSquared(),0.0001,"bad LengthSquared");
     }
+
 
     @Test
     void testLength() {
@@ -74,5 +76,6 @@ class VectorTest {
         assertThrows(IllegalArgumentException.class,
                 () -> v.crossProduct(u), "the normalized vector is not parallel to the original one");
         assertFalse(v.dotProduct(u) < 0," the normalized vector is opposite to the original one");
+        }
+
     }
-}
