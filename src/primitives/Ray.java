@@ -3,6 +3,14 @@ package primitives;
 import java.util.Objects;
 
 public class Ray {
+    public Point getP0() {
+        return p0;
+    }
+
+    public Vector getDir() {
+        return dir;
+    }
+
     private final Point p0;
     private final Vector dir;
 

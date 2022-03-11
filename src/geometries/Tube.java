@@ -4,6 +4,8 @@ import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
+import static java.lang.System.out;
+
 /**
  *Tube class that implements the interface Geometry
  */
@@ -46,7 +48,18 @@ public class Tube implements Geometry{
      */
     @Override
     public Vector getNormal(Point point) {
-        return null;
+        Vector pp0=point.subtract(axisRay.getP0());
+        double t =axisRay.getDir().dotProduct(pp0);
+        Point o=axisRay.getP0().add(axisRay.getDir().scale(t));
+        try{
+            pp0.crossProduct(axisRay.getDir());
+        }
+        catch (Exception e) {
+            throw new IllegalArgumentException("point cannot be equal to o");
+        }
+
+
+        return point.subtract(o).normalize();
     }
 
     /**

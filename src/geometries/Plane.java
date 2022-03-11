@@ -43,8 +43,19 @@ public class Plane  implements Geometry {
      * @param point3 Third point
      */
     public Plane(Point point1,Point point2,Point point3) {
-        normal = null;
-        p0 = point1;
+        try {
+            Vector v=point2.subtract(point1);
+            Vector u =point3.subtract(point1);
+
+            Vector n=u.crossProduct(v);
+            normal=n.normalize();
+            p0 = point1;
+        }
+        catch (IllegalArgumentException e){
+            throw  new IllegalArgumentException("the tree points are in the same line or 2 points are equals");
+
+        }
+
     }
 
     /**
@@ -54,7 +65,7 @@ public class Plane  implements Geometry {
      */
     @Override
     public Vector getNormal(Point point) {
-        return null;
+        return normal;
     }
 
     /**
