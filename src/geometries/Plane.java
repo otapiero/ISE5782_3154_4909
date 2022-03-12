@@ -44,11 +44,11 @@ public class Plane  implements Geometry {
      */
     public Plane(Point point1,Point point2,Point point3) {
         try {
-            Vector v=point2.subtract(point1);
+            Vector v=point1.subtract(point2);
             Vector u =point3.subtract(point1);
 
             Vector n=u.crossProduct(v);
-            normal=n.normalize();
+            normal= n.normalize();
             p0 = point1;
         }
         catch (IllegalArgumentException e){
