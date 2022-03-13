@@ -43,8 +43,8 @@ public class Tube implements Geometry{
 
     /**
      * Returns the Normal to shape
-     * @param point
-     * @return
+     * @param point on the edge of the tube
+     * @return vector of normal to the tube
      */
     @Override
     public Vector getNormal(Point point) {

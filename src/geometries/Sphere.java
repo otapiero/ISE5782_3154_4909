@@ -38,8 +38,8 @@ public class Sphere implements Geometry{
 
     /**
      * Returns the Normal to Sphere
-     * @param point
-     * @return
+     * @param point on the edge of the sphere
+     * @return vector Normal to the Sphere
      */
     @Override
     public Vector getNormal(Point point) {

@@ -28,8 +28,8 @@ public class Plane  implements Geometry {
 
     /**
      * A constructor that receives the point and the vector
-     * @param point
-     * @param vector
+     * @param point of the plane
+     * @param vector vector normal to the plane
      */
     public Plane(Point point, Vector vector) {
         this.p0 = point;
@@ -60,8 +60,8 @@ public class Plane  implements Geometry {
 
     /**
      * Returns the Normal to plane
-     * @param point
-     * @return
+     * @param point on the plane
+     * @return vector normal to the plane
      */
     @Override
     public Vector getNormal(Point point) {
