@@ -53,8 +53,6 @@ public class Cylinder extends Tube {
         this.height = height;
     }
 
-
-
     /**
      * toString
      * @return
@@ -65,6 +63,6 @@ public class Cylinder extends Tube {
                 "height=" + height +
                 ", axisRay=" + axisRay +
                 ", radius=" + radius +
-                '}';
+                   '}';
     }
 }

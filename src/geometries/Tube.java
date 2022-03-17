@@ -4,6 +4,8 @@ import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
+import java.util.List;
+
 import static java.lang.System.out;
 
 /**
@@ -51,12 +53,7 @@ public class Tube implements Geometry{
         Vector pp0=point.subtract(axisRay.getP0());
         double t =axisRay.getDir().dotProduct(pp0);
         Point o=axisRay.getP0().add(axisRay.getDir().scale(t));
-        try{
-            pp0.crossProduct(axisRay.getDir());
-        }
-        catch (Exception e) {
-            throw new IllegalArgumentException("point cannot be equal to o");
-        }
+        pp0.crossProduct(axisRay.getDir());//test
 
 
         return point.subtract(o).normalize();
@@ -72,5 +69,10 @@ public class Tube implements Geometry{
                 "axisRay=" + axisRay +
                 ", radius=" + radius +
                 '}';
+    }
+
+    @Override
+    public List<Point> findIntersections(Ray ray) {
+        return null;
     }
 }

@@ -1,6 +1,9 @@
 package geometries;
-
+import static primitives.Util.*;
 import primitives.Point;
+import primitives.Ray;
+
+import java.util.List;
 
 /**
  *A Triangle class that inherits from the Polygon class
@@ -27,5 +30,10 @@ public class Triangle extends Polygon{
                 "vertices=" + vertices +
                 ", plane=" + plane +
                 '}';
+    }
+
+    @Override
+    public List<Point> findIntersections(Ray ray) {
+        return super.findIntersections(ray);
     }
 }

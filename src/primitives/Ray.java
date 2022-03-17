@@ -23,7 +23,9 @@ public class Ray {
         this.p0 = p0;
         this.dir = dir.normalize();
     }
-
+    public Point getPoint(double t) {
+        return getP0().add(getDir().scale(t));
+    }
     @Override
     public String toString() {
         return "Ray{" +

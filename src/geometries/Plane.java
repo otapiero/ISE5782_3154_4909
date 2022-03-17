@@ -1,7 +1,10 @@
 package geometries;
 
 import primitives.Point;
+import primitives.Ray;
 import primitives.Vector;
+
+import java.util.List;
 
 /**
  * Class Plane that implements the interface Geometry and contains a starting point and direction vector
@@ -79,4 +82,22 @@ public class Plane  implements Geometry {
                 ", normal=" + normal +
                 '}';
     }
+
+    @Override
+    public List<Point> findIntersections(Ray ray) {
+        return null;
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
