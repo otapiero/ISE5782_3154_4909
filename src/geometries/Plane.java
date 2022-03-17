@@ -6,6 +6,8 @@ import primitives.Vector;
 
 import java.util.List;
 
+import static primitives.Util.isZero;
+
 /**
  * Class Plane that implements the interface Geometry and contains a starting point and direction vector
  */
@@ -85,7 +87,16 @@ public class Plane  implements Geometry {
 
     @Override
     public List<Point> findIntersections(Ray ray) {
-        return null;
+        if(getP0().equals(ray.getP0())) return null;
+
+        double td = getNormal().dotProduct(getP0().subtract(ray.getP0())); // מונה
+        double tn = getNormal().dotProduct(ray.getDir()); // מכנה
+        if (isZero(td) || isZero(tn)) return null;
+        double t = td/tn;
+
+        if (t < 0)return null;
+        return List.of(ray.getPoint(t));
+
     }
 }
 
