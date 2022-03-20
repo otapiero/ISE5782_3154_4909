@@ -85,6 +85,11 @@ public class Plane  implements Geometry {
                 '}';
     }
 
+    /**
+     *
+     * @param ray for finding intersections with plan
+     * @return list of point that intersect with the plane
+     */
     @Override
     public List<Point> findIntersections(Ray ray) {
         if(getP0().equals(ray.getP0())) return null;

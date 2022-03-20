@@ -32,7 +32,10 @@ public class Triangle extends Polygon{
                 ", plane=" + plane +
                 '}';
     }
-
+    /**
+     * @param ray for finding intersections with triangle
+     * @return list of point that intersect with the triangle
+     */
     @Override
     public List<Point> findIntersections(Ray ray) {
         List<Point> result = plane.findIntersections(ray);

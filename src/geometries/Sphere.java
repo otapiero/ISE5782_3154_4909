@@ -68,7 +68,10 @@ public class Sphere implements Geometry {
                 ", radius=" + radius +
                 '}';
     }
-
+    /**
+     * @param ray for finding intersections with sphere
+     * @return list of point that intersect with the sphere
+     */
     @Override
     public List<Point> findIntersections(Ray ray) {
         ;
