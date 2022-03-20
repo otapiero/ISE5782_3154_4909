@@ -89,10 +89,10 @@ public class Plane  implements Geometry {
     public List<Point> findIntersections(Ray ray) {
         if(getP0().equals(ray.getP0())) return null;
 
-        double td = getNormal().dotProduct(getP0().subtract(ray.getP0())); // מונה
-        double tn = getNormal().dotProduct(ray.getDir()); // מכנה
-        if (isZero(td) || isZero(tn)) return null;
-        double t = td/tn;
+        double Td = getNormal().dotProduct(getP0().subtract(ray.getP0())); // מונה
+        double Tn = getNormal().dotProduct(ray.getDir()); // מכנה
+        if (isZero(Td) || isZero(Tn)) return null;
+        double t = Td/Tn;
 
         if (t < 0)return null;
         return List.of(ray.getPoint(t));

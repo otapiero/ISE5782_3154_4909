@@ -35,7 +35,27 @@ public class Triangle extends Polygon{
 
     @Override
     public List<Point> findIntersections(Ray ray) {
+        List<Point> result = plane.findIntersections(ray);
+        if (result == null) {
+            return null;
+        }
+        Point p0 =ray.getP0();
+        Vector dir=ray.getDir();
+        Vector v1 = this.vertices.get(0).subtract(p0),
+                v2 = this.vertices.get(1).subtract(p0),
+                v3 = this.vertices.get(2).subtract(p0);
 
-       return null;
+        Vector n1 = v1.crossProduct(v2).normalize(),
+                n2 = v2.crossProduct(v3).normalize(),
+                n3 = v3.crossProduct(v1).normalize();
+
+        double x1 = alignZero(dir.dotProduct(n1)),
+                x2 = alignZero(dir.dotProduct(n2)),
+                x3 = alignZero(dir.dotProduct(n3));
+
+        if((x1 < 0 && x2 < 0 && x3 < 0) || (x1 > 0 && x2 > 0 && x3 > 0)) {
+            return result;
+        }
+        return null;
     }
 }
