@@ -2,6 +2,9 @@ package renderer;
 
 import primitives.*;
 
+import java.util.MissingResourceException;
+import java.util.concurrent.ExecutionException;
+
 import static primitives.Util.alignZero;
 import static primitives.Util.isZero;
 
@@ -9,6 +12,29 @@ public class Camera {
     Point point;
     Vector Vright,Vup,Vto;
     double height, distance,width;
+
+    public ImageWriter getImageWriter() {
+        return imageWriter;
+    }
+
+    public RayTracerBase getRayTracer() {
+        return rayTracer;
+    }
+
+    ImageWriter imageWriter;
+
+    public Camera setImageWriter(ImageWriter imageWriter) {
+        this.imageWriter = imageWriter;
+        return this;
+    }
+
+    public Camera setRayTracer(RayTracerBase rayTracer) {
+        this.rayTracer = rayTracer;
+        return this;
+    }
+
+    RayTracerBase rayTracer;
+
 
     /**
      *
@@ -131,4 +157,39 @@ public class Camera {
     }
 
 
+    public void renderImage() {
+        if (imageWriter == null || this.rayTracer == null || distance == 0 || this.width == 0 || this.height == 0) {
+            throw new MissingResourceException("the image writer or the ray tracer or the distance or the width or the height is not set", "Camera", "Camera");
+        }
+        for (int i = 0; i < imageWriter.getNx(); i++) {
+            for (int j = 0; j < imageWriter.getNy(); j++) {
+
+                imageWriter.writePixel(i, j, castRay(i, j));
+            }
+        }
+    }
+    private Color castRay(int i, int j) {
+        return rayTracer.traceRay(this.constructRay(imageWriter.getNx(), imageWriter.getNy(),  i, j));
+    }
+
+    public void printGrid(int interval, Color color){
+        if (imageWriter == null ) {
+            throw new MissingResourceException("the image writer is not set", "Camera", "Camera");
+        }
+        for (int i = 0; i < imageWriter.getNx(); i++) {
+            for (int j = 0; j < imageWriter.getNy(); j++) {
+                if (i % interval == 0 || j % interval == 0) {
+                    imageWriter.writePixel(j, i, color);
+
+                }
+            }
+        }
+    }
+
+    public void writeToImage() {
+        if (imageWriter == null) {
+            throw new MissingResourceException("the image writer is not set", "Camera", "Camera");
+        }
+        imageWriter.writeToImage();
+    }
 }
