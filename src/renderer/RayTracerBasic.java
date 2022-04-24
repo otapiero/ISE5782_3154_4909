@@ -10,6 +10,10 @@ import java.util.List;
 
 public class RayTracerBasic extends RayTracerBase {
 
+    /**
+     * ctor - initializing the scene parameter
+     * @param
+     */
     public RayTracerBasic(Scene scene) {
         super(scene);
     }
@@ -17,6 +21,9 @@ public class RayTracerBasic extends RayTracerBase {
         return scene.ambientLight.getIntensity();
     }
 
+    /**
+     * implementation of super class trace ray method
+     */
     @Override
     public Color traceRay(Ray ray) {
         List<Point> intersections= scene.geometries.findIntersections(ray);

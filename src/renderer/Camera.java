@@ -157,6 +157,9 @@ public class Camera {
     }
 
 
+    /**
+     The function writes the pixels to the image
+     */
     public void renderImage() {
         if (imageWriter == null || this.rayTracer == null || distance == 0 || this.width == 0 || this.height == 0) {
             throw new MissingResourceException("the image writer or the ray tracer or the distance or the width or the height is not set", "Camera", "Camera");
@@ -168,10 +171,18 @@ public class Camera {
             }
         }
     }
+
     private Color castRay(int i, int j) {
         return rayTracer.traceRay(this.constructRay(imageWriter.getNx(), imageWriter.getNy(),  i, j));
     }
 
+
+    /**
+     * Creates a grid of lines
+     * gives color only to the grid defects but not to the rest of the pixels.
+     * @param interval - the size of each square in the grid (height and width)
+     * @param color - the color for the grid
+     */
     public void printGrid(int interval, Color color){
         if (imageWriter == null ) {
             throw new MissingResourceException("the image writer is not set", "Camera", "Camera");
@@ -186,6 +197,9 @@ public class Camera {
         }
     }
 
+    /**
+     * The function calls the function "writeToImage" in class "ImageWriter"
+     */
     public void writeToImage() {
         if (imageWriter == null) {
             throw new MissingResourceException("the image writer is not set", "Camera", "Camera");

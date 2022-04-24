@@ -8,6 +8,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ImageWriterTest {
 
+    /**
+     *   write an image of a simple colored grid over a colored background
+     */
     @Test
     void testImageWriter() {
 

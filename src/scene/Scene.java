@@ -16,17 +16,30 @@ public class Scene {
     }
 
 
+
+    /**
+     * set the Background color for the scene
+     * @return the scene object
+     */
     public Scene setBackground(Color background) {
         this.background = background;
         return this;
     }
 
 
-
+    /**
+     * set the geometry model - a list of geometries
+     * @return the scene object
+     */
     public Scene setGeometries(Geometries geometries) {
         this.geometries = geometries;
         return this;
     }
+
+    /**
+     * set the Ambient Light for the scene
+     * @return the scene object
+     */
     public Scene setAmbientLight(AmbientLight ambientLight) {
         this.ambientLight = ambientLight;
         return this;

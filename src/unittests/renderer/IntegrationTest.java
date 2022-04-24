@@ -58,7 +58,14 @@ class IntegrationTest {
     }
 
 
-
+    /**
+     *checking the number of intersection points between the ray from the camera and the geometry
+     * @param expected
+     * @param cam
+     * @param geo
+     * @param nX
+     * @param nY
+     */
     private void assertCountIntersections(int expected, Camera cam, Intersectable geo, int nX, int nY) {
         int count = 0;
         for(int i = 0; i < nX; i++){
