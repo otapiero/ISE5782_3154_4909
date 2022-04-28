@@ -2,32 +2,26 @@ package lighting;
 
 import primitives.*;
 
-public class AmbientLight {
-    Color intensity;
+/**
+ * The type Ambient light.
+ */
+public class AmbientLight extends Light {
 
     /**
-     * default constructor
+     * Instantiates a new Ambient light.
      */
     public AmbientLight() {
-        intensity = Color.BLACK;
-
+        super(Color.BLACK);
     }
 
     /**
-     * the ctor creates the intensity by multiplying the given color with the given attenuation factor.
-     * @param
-     * @param
+     * Instantiates a new Ambient light.
+     *
+     * @param Ia the ia
+     * @param Ka the ka
      */
     public AmbientLight(Color Ia, Double3 Ka) {
-        intensity = Ia.scale(Ka);
-    }
-
-    /**
-     * get for intensity
-     * @return
-     */
-    public Color getIntensity() {
-        return intensity;
+        super(Ia.scale(Ka));
     }
 
 }

@@ -2,23 +2,63 @@ package scene;
 
 import geometries.Geometries;
 import lighting.AmbientLight;
+import lighting.LightSource;
 import primitives.Color;
 
-public class Scene {
-    public String name;
-    public Color background;
-    public AmbientLight ambientLight;
-    public Geometries geometries;
+import java.util.*;
 
+
+/**
+ * The type Scene.
+ */
+public class Scene {
+    /**
+     * The Name.
+     */
+    public String name;
+    /**
+     * The Background.
+     */
+    public Color background=Color.BLACK;
+    /**
+     * The Ambient light.
+     */
+    public AmbientLight ambientLight = new AmbientLight();
+    /**
+     * The Geometries.
+     */
+    public Geometries geometries;
+    /**
+     * The Lights.
+     */
+    public List<LightSource> lights =new LinkedList<>();
+
+    /**
+     * Sets lights.
+     *
+     * @param lights the lights
+     * @return the lights
+     */
+    public Scene setLights(List<LightSource> lights) {
+        this.lights = lights;
+        return this;
+    }
+
+    /**
+     * Instantiates a new Scene.
+     *
+     * @param name the name
+     */
     public Scene(String name) {
         this.name = name;
         geometries=new Geometries();
     }
 
 
-
     /**
      * set the Background color for the scene
+     *
+     * @param background the background
      * @return the scene object
      */
     public Scene setBackground(Color background) {
@@ -29,6 +69,8 @@ public class Scene {
 
     /**
      * set the geometry model - a list of geometries
+     *
+     * @param geometries the geometries
      * @return the scene object
      */
     public Scene setGeometries(Geometries geometries) {
@@ -38,6 +80,8 @@ public class Scene {
 
     /**
      * set the Ambient Light for the scene
+     *
+     * @param ambientLight the ambient light
      * @return the scene object
      */
     public Scene setAmbientLight(AmbientLight ambientLight) {

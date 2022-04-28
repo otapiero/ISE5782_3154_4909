@@ -47,7 +47,7 @@ class IntegrationTest {
         Camera cam = new Camera(
                 new Point(0,0,0),
                 new Vector(0, 0, -1),
-                new Vector(0, 1, 0));
+                new Vector(0, 1, 0)).setVPSize(3,3).setVPDistance(1);
         //TC:01 - plane Parallel to the screen 9 points
         assertCountIntersections(9, cam, new Plane(new Point(0,0,-2), new Vector(0,0,1)),3,3);
         //TC:02 - plane  9 points
@@ -70,7 +70,7 @@ class IntegrationTest {
         int count = 0;
         for(int i = 0; i < nX; i++){
             for(int j = 0; j < nY; j++){
-                var ray = cam.constructRay(nX, nY, j, i); // create ray in the view plane
+                var ray = cam.constructRay(nX, nY,i,j); // create ray in the view plane
                 var intersections = geo.findIntersections(ray);
 
                 if(intersections != null){

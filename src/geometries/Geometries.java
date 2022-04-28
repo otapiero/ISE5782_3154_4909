@@ -6,7 +6,7 @@ import primitives.Ray;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Geometries implements Intersectable{
+public class Geometries extends Intersectable{
     List<Intersectable> geometriesLinkedList;
 //class for set of geometries object
 
@@ -34,10 +34,10 @@ public class Geometries implements Intersectable{
      * @return list of point that intersect with one of the shapes in the set
      */
     @Override
-    public List<Point> findIntersections(Ray ray) {
-        List<Point> result= null ;
+    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+        List<GeoPoint> result= null ;
         for (var i: geometriesLinkedList) {
-            List<Point> points=i.findIntersections(ray);
+            List<GeoPoint> points=i.findGeoIntersectionsHelper(ray);
             if (points!=null){
                 if (result==null){
                     result=new LinkedList();

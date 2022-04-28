@@ -11,7 +11,7 @@ import static java.lang.System.out;
 /**
  *Tube class that implements the interface Geometry
  */
-public class Tube implements Geometry{
+public class Tube extends Geometry{
 
     /**
      * A constructor that receives the radius and ray
@@ -72,7 +72,7 @@ public class Tube implements Geometry{
     }
 
     @Override
-    public List<Point> findIntersections(Ray ray) {
+    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
         return null;
     }
 }

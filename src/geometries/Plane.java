@@ -11,7 +11,7 @@ import static primitives.Util.isZero;
 /**
  * Class Plane that implements the interface Geometry and contains a starting point and direction vector
  */
-public class Plane  implements Geometry {
+public class Plane  extends Geometry {
     private Point p0;
     private Vector normal;
 
@@ -91,7 +91,7 @@ public class Plane  implements Geometry {
      * @return list of point that intersect with the plane
      */
     @Override
-    public List<Point> findIntersections(Ray ray) {
+    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
         if(getP0().equals(ray.getP0())) return null;
 
         double Td = getNormal().dotProduct(getP0().subtract(ray.getP0())); // מונה
@@ -100,7 +100,7 @@ public class Plane  implements Geometry {
         double t = Td/Tn;
 
         if (t < 0)return null;
-        return List.of(ray.getPoint(t));
+        return List.of(new GeoPoint(this,ray.getPoint(t)));
 
     }
 }

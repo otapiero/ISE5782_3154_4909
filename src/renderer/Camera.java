@@ -8,46 +8,99 @@ import java.util.concurrent.ExecutionException;
 import static primitives.Util.alignZero;
 import static primitives.Util.isZero;
 
+/**
+ * The type Camera.
+ */
 public class Camera {
+    /**
+     * The Point.
+     */
     Point point;
-    Vector Vright,Vup,Vto;
-    double height, distance,width;
+    /**
+     * The Vright.
+     */
+    Vector Vright, /**
+     * The Vup.
+     */
+    Vup, /**
+     * The Vto.
+     */
+    Vto;
+    /**
+     * The Height.
+     */
+    double height, /**
+     * The Distance.
+     */
+    distance, /**
+     * The Width.
+     */
+    width;
+    /**
+     * The Image writer.
+     */
+    ImageWriter imageWriter;
+    /**
+     * The Ray tracer.
+     */
+    RayTracerBase rayTracer;
 
+    /**
+     * Gets image writer.
+     *
+     * @return the image writer
+     */
     public ImageWriter getImageWriter() {
         return imageWriter;
     }
 
+    /**
+     * Gets ray tracer.
+     *
+     * @return the ray tracer
+     */
     public RayTracerBase getRayTracer() {
         return rayTracer;
     }
 
-    ImageWriter imageWriter;
 
+    /**
+     * Sets image writer.
+     *
+     * @param imageWriter the image writer
+     * @return the image writer
+     */
     public Camera setImageWriter(ImageWriter imageWriter) {
         this.imageWriter = imageWriter;
         return this;
     }
 
+    /**
+     * Sets ray tracer.
+     *
+     * @param rayTracer the ray tracer
+     * @return the ray tracer
+     */
     public Camera setRayTracer(RayTracerBase rayTracer) {
         this.rayTracer = rayTracer;
         return this;
     }
 
-    RayTracerBase rayTracer;
 
 
     /**
-     *
      * Returns the point 0
-     * @return
+     *
+     * @return point
      */
     public Point getPoint() {
         return point;
     }
 
     /**
-     *Returns the direction vector to the right
-     * @return
+     * Returns the direction vector to the right
+     *
+     * @return vright
      */
     public Vector getVright() {
         return Vright;
@@ -55,7 +108,8 @@ public class Camera {
 
     /**
      * Returns the direction vector up
-     * @return
+     *
+     * @return vup
      */
     public Vector getVup() {
         return Vup;
@@ -63,7 +117,8 @@ public class Camera {
 
     /**
      * Returns the direction vector straight
-     * @return
+     *
+     * @return vto
      */
     public Vector getVto() {
         return Vto;
@@ -71,7 +126,8 @@ public class Camera {
 
     /**
      * Returns the height of the viewo plane
-     * @return
+     *
+     * @return height
      */
     public double getHeight() {
         return height;
@@ -79,15 +135,17 @@ public class Camera {
 
     /**
      * Returns the distance of the view plane from the camera
-     * @return
+     *
+     * @return distance
      */
     public double getDistance() {
         return distance;
     }
 
     /**
-     *Returns the width of the viewo plane
-     * @return
+     * Returns the width of the viewo plane
+     *
+     * @return width
      */
     public double getWidth() {
         return width;
@@ -95,9 +153,10 @@ public class Camera {
 
     /**
      * A builder that gets the vectors up and straight and builds the vector to the right and saves all the values
-     * @param point
-     * @param vto
-     * @param vup
+     *
+     * @param point the point
+     * @param vto   the vto
+     * @param vup   the vup
      */
     public Camera(Point point, Vector vto,Vector vup) {
 
@@ -111,9 +170,10 @@ public class Camera {
 
     /**
      * set to the width and height values
-     * @param width
-     * @param height
-     * @return
+     *
+     * @param width  the width
+     * @param height the height
+     * @return vp size
      */
     public Camera setVPSize(double width, double height) {
         this.width = width;
@@ -123,8 +183,9 @@ public class Camera {
 
     /**
      * set to the value of the distance from the camera
-     * @param distance
-     * @return
+     *
+     * @param distance the distance
+     * @return camera
      */
     public Camera setVPDistance(double distance){
         this.distance=distance;
@@ -134,13 +195,17 @@ public class Camera {
     /**
      * The function gets the number of pixels there are, and also the i and j of a specific pixel in vieow plane
      * and returns ray through this pixel
-     * @param nX
-     * @param nY
-     * @param j
-     * @param i
-     * @return
+     *
+     * @param nX the n x
+     * @param nY the n y
+     * @param j  the j
+     * @param i  the
+     * @return ray
      */
     public Ray constructRay(int nX, int nY, int j, int i){
+        if ( distance == 0) {
+            throw new IllegalArgumentException("distance is 0");
+        }
         Point Pc=point.add(Vto.scale(distance));
        double Ry=alignZero(height/nY);
        double Rx=alignZero(width/nX);
@@ -158,9 +223,9 @@ public class Camera {
 
 
     /**
-     The function writes the pixels to the image
+     * The function writes the pixels to the image
      */
-    public void renderImage() {
+    public Camera renderImage() {
         if (imageWriter == null || this.rayTracer == null || distance == 0 || this.width == 0 || this.height == 0) {
             throw new MissingResourceException("the image writer or the ray tracer or the distance or the width or the height is not set", "Camera", "Camera");
         }
@@ -170,6 +235,7 @@ public class Camera {
                 imageWriter.writePixel(i, j, castRay(i, j));
             }
         }
+        return this;
     }
 
     private Color castRay(int i, int j) {
@@ -180,8 +246,9 @@ public class Camera {
     /**
      * Creates a grid of lines
      * gives color only to the grid defects but not to the rest of the pixels.
+     *
      * @param interval - the size of each square in the grid (height and width)
-     * @param color - the color for the grid
+     * @param color    - the color for the grid
      */
     public void printGrid(int interval, Color color){
         if (imageWriter == null ) {
@@ -200,10 +267,11 @@ public class Camera {
     /**
      * The function calls the function "writeToImage" in class "ImageWriter"
      */
-    public void writeToImage() {
+    public Camera writeToImage() {
         if (imageWriter == null) {
             throw new MissingResourceException("the image writer is not set", "Camera", "Camera");
         }
         imageWriter.writeToImage();
+        return this;
     }
 }
