@@ -2,6 +2,8 @@ package geometries;
 
 import primitives.*;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import static primitives.Util.*;
@@ -92,6 +94,37 @@ public class Polygon extends Geometry {
 
     @Override
     public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
-        return null;
+        // find the intersection of the ray with the plane
+        var intersection = plane.findGeoIntersectionsHelper(ray);
+        if (intersection == null)
+            return null;
+        // check if the intersection is inside the polygon
+        intersection = List.of( new GeoPoint(this ,intersection.get(0).point));
+        Point p0= ray.getP0();
+        Vector v = ray.getDir();
+        Point p1= vertices.get(size-1);
+        Point p2= vertices.get(0);
+        Vector v1 = p1.subtract(p0); // vector from p0 to p1
+        Vector v2 = p2.subtract(p0); // vector from p0 to p2
+        double cross = alignZero(v.dotProduct(v1.crossProduct(v2))); // cross product of v and v1 x v2
+        if (isZero(cross)) {
+            return null;
+        }
+        boolean positive = cross > 0;
+        for (int i = 0; i < size-1; ++i) {
+            p1 = vertices.get(i);
+            p2 = vertices.get(i+1);
+             v1 = p1.subtract(p0);// vector from p0 to p1
+             v2 = p2.subtract(p0);// vector from p0 to p2
+             cross = alignZero(v.dotProduct(v1.crossProduct(v2)));// cross product of v1 and v2
+            if (isZero(cross)) {
+                return null;
+            }
+            if (positive != (cross > 0)) {
+                return null;
+            }
+        }
+        return intersection;
+
     }
 }

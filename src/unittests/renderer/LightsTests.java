@@ -29,7 +29,7 @@ public class LightsTests {
             new Point(-110, -110, -150), // the shared left-bottom
             new Point(95, 100, -150), // the shared right-top
             new Point(110, -110, -150), // the right-bottom
-            new Point(-75, 78, 100) }; // the left-top
+            new Point(-75, 78, 100)}; // the left-top
     private Point trPL = new Point(30, 10, -100); // Triangles test Position of Light
     private Point spPL = new Point(-50, -50, 25); // Sphere test Position of Light
     private Color trCL = new Color(800, 500, 250); // Triangles test Color of Light
@@ -136,7 +136,7 @@ public class LightsTests {
      * Produce a picture of a sphere lighted by a narrow spot light
      */
 
-   /* @Test
+    @Test
     public void sphereSpotSharp() {
         scene1.geometries.add(sphere);
         scene1.lights
@@ -147,21 +147,21 @@ public class LightsTests {
                 .setRayTracer(new RayTracerBasic(scene1)) //
                 .renderImage() //
                 .writeToImage(); //
-    }*/
+    }
+        /**
+         * Produce a picture of a two triangles lighted by a narrow spot light
+         */
+        @Test
+        public void trianglesSpotSharp() {
+            scene2.geometries.add(triangle1, triangle2);
+            scene2.lights.add(new SpotLight(trCL, trPL, trDL).setNarrowBeam(10).setKl(0.001).setKq(0.00004));
 
-    /**
-     * Produce a picture of a two triangles lighted by a narrow spot light
-     */
-  /*  @Test
-    public void trianglesSpotSharp() {
-        scene2.geometries.add(triangle1, triangle2);
-        scene2.lights.add(new SpotLight(trCL, trPL, trDL).setNarrowBeam(10).setKl(0.001).setKq(0.00004));
+            ImageWriter imageWriter = new ImageWriter("lightTrianglesSpotSharp", 500, 500);
+            camera2.setImageWriter(imageWriter) //
+                    .setRayTracer(new RayTracerBasic(scene2)) //
+                    .renderImage() //
+                    .writeToImage(); //
 
-        ImageWriter imageWriter = new ImageWriter("lightTrianglesSpotSharp", 500, 500);
-        camera2.setImageWriter(imageWriter) //
-                .setRayTracer(new RayTracerBasic(scene2)) //
-                .renderImage() //
-                .writeToImage(); //
-    }*/
+        }
+    }
 
-}
