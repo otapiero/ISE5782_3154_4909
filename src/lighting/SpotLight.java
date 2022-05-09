@@ -30,4 +30,8 @@ public class SpotLight extends PointLight{
         super(intensity, position);
         this.direction = direction.normalize();
     }
+
+    public PointLight setNarrowBeam(int i) {
+        return this;
+    }
 }

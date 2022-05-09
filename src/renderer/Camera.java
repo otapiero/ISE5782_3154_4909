@@ -12,6 +12,9 @@ import static primitives.Util.isZero;
  * The type Camera.
  */
 public class Camera {
+    static Vector VUP = new Vector(0, 1, 0);
+    static Vector VRIGHT = new Vector(1, 0, 0);
+    static Vector VTO = new Vector(0, 0, 1);
     /**
      * The Point.
      */
@@ -87,7 +90,6 @@ public class Camera {
     }
 
 
-
     /**
      * Returns the point 0
      *
@@ -158,13 +160,13 @@ public class Camera {
      * @param vto   the vto
      * @param vup   the vup
      */
-    public Camera(Point point, Vector vto,Vector vup) {
+    public Camera(Point point, Vector vto, Vector vup) {
 
         if (!isZero(vto.dotProduct(vup))) throw new IllegalArgumentException("the vectors are not orthogonal");
         Vup = vup.normalize();
         Vto = vto.normalize();
-        Vright=Vto.crossProduct(Vup).normalize();
-        this.point=point;
+        Vright = Vto.crossProduct(Vup).normalize();
+        this.point = point;
 
     }
 
@@ -187,8 +189,8 @@ public class Camera {
      * @param distance the distance
      * @return camera
      */
-    public Camera setVPDistance(double distance){
-        this.distance=distance;
+    public Camera setVPDistance(double distance) {
+        this.distance = distance;
         return this;
     }
 
@@ -202,23 +204,23 @@ public class Camera {
      * @param i  the
      * @return ray
      */
-    public Ray constructRay(int nX, int nY, int j, int i){
-        if ( distance == 0) {
+    public Ray constructRay(int nX, int nY, int j, int i) {
+        if (distance == 0) {
             throw new IllegalArgumentException("distance is 0");
         }
-        Point Pc=point.add(Vto.scale(distance));
-       double Ry=alignZero(height/nY);
-       double Rx=alignZero(width/nX);
+        Point Pc = point.add(Vto.scale(distance));
+        double Ry = alignZero(height / nY);
+        double Rx = alignZero(width / nX);
         // Xj = (j - (Nx -1)/2) * Rx
         double Xj = alignZero((j - ((nX - 1d) / 2d)) * Rx);
         // Yi = -(i - (Ny - 1)/2) * Ry
-        double Yi = alignZero(- (i - ((nY - 1d) / 2d)) * Ry);
-       Point Pij=Pc;
+        double Yi = alignZero(-(i - ((nY - 1d) / 2d)) * Ry);
+        Point Pij = Pc;
         if (Xj != 0d) Pij = Pij.add(Vright.scale(Xj));
         if (Yi != 0d) Pij = Pij.add(Vup.scale(Yi));
-        if(Pij.equals(point)) throw new IllegalArgumentException("the point is the same as the camera");
+        if (Pij.equals(point)) throw new IllegalArgumentException("the point is the same as the camera");
 
-        return new Ray(point,Pij.subtract(point).normalize());
+        return new Ray(point, Pij.subtract(point).normalize());
     }
 
 
@@ -239,7 +241,7 @@ public class Camera {
     }
 
     private Color castRay(int i, int j) {
-        return rayTracer.traceRay(this.constructRay(imageWriter.getNx(), imageWriter.getNy(),  i, j));
+        return rayTracer.traceRay(this.constructRay(imageWriter.getNx(), imageWriter.getNy(), i, j));
     }
 
 
@@ -250,8 +252,8 @@ public class Camera {
      * @param interval - the size of each square in the grid (height and width)
      * @param color    - the color for the grid
      */
-    public void printGrid(int interval, Color color){
-        if (imageWriter == null ) {
+    public void printGrid(int interval, Color color) {
+        if (imageWriter == null) {
             throw new MissingResourceException("the image writer is not set", "Camera", "Camera");
         }
         for (int i = 0; i < imageWriter.getNx(); i++) {
@@ -274,4 +276,45 @@ public class Camera {
         imageWriter.writeToImage();
         return this;
     }
+
+    public Camera moveCamera(Vector direction, double distance) {
+        this.point = this.point.add(direction.scale(distance));
+        return this;
+    }
+
+    public Camera moveCameraAndPointWiew(Vector direction, double distance, Point newWiewPoint,double angle) {
+        moveCamera(direction, distance);
+        if (!newWiewPoint.equals(point)) {
+
+            this.Vto = newWiewPoint.subtract(this.point).normalize();
+            this.Vup = VUP;
+            this.Vright = Vto.crossProduct(Vup).normalize();
+            rotateCameraByVto(angle);
+        }
+        return this;
+    }
+    // rotate the camera by the angle around the vector Vto (the vector from the camera to the point of view)
+    private void rotateCameraByVto(double angle) {
+        double radians = Math.toRadians(angle);
+        double cos = Math.cos(radians);
+        double sin = Math.sin(radians);
+        this.Vup = new Vector(Vup.getX() * cos - Vup.getY() * sin, Vup.getX() * sin + Vup.getY() * cos, Vup.getZ() * cos - Vup.getZ() * sin).normalize();
+        this.Vright = this.Vto.crossProduct(this.Vup).normalize();
+
+    }
+    public Camera rotateCamera(double angle) {
+        rotateCameraByVto(angle);
+        return this;
+    }
+    // zoom in or out the camera by the factor
+    public Camera zoomCamera(double factor) {
+        this.distance *= factor;
+        return this;
+
+    }
+
 }
+
+
+
+

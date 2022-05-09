@@ -1,8 +1,9 @@
 package primitives;
 
-public class Vector extends Point{
+public class Vector extends Point {
     /**
-     *constructor of vector by a given double3
+     * constructor of vector by a given double3
+     *
      * @param xyz a double3 for the vector
      */
     public Vector(Double3 xyz) {
@@ -12,7 +13,8 @@ public class Vector extends Point{
     }
 
     /**
-     *constructor of vector by 3 given double
+     * constructor of vector by 3 given double
+     *
      * @param x x coordinate
      * @param y y coordinate
      * @param z z coordinate
@@ -33,34 +35,38 @@ public class Vector extends Point{
 
     /**
      * add a vector to this vector to creat a new vector
+     *
      * @param other a second vector
      * @return new vector result of this+other
      */
-    public Vector add(Vector other){
+    public Vector add(Vector other) {
         return new Vector(this.xyz.add(other.xyz));
     }
 
     /**
      * divide the vector by a scalar to creat a new vector
+     *
      * @param rhs a scalar to divide the vector by it
      * @return new vector result of this/rhs
      */
-    public Vector scale(double rhs){
+    public Vector scale(double rhs) {
         return new Vector(xyz.scale(rhs));
     }
 
     /**
      * dot product of this vector by an other vector
+     *
      * @param other second vector
      * @return new vector result of other*this
      */
-    public double dotProduct(Vector other){
-        Double3 temp=this.xyz.product(other.xyz);
-        return temp.d1+temp.d2+temp.d3;
+    public double dotProduct(Vector other) {
+        Double3 temp = this.xyz.product(other.xyz);
+        return temp.d1 + temp.d2 + temp.d3;
     }
 
     /**
      * cross product of this vector by an other vector
+     *
      * @param other second vector
      * @return new vector result of other*this
      */
@@ -74,22 +80,25 @@ public class Vector extends Point{
 
     /**
      * the length of the vector squared
+     *
      * @return length of the vector squared
      */
-    public double lengthSquared(){
+    public double lengthSquared() {
         return this.distanceSquared(new Point(xyz.ZERO));
     }
 
     /**
-     *  the length of the vector
+     * the length of the vector
+     *
      * @return length of the vector
      */
-    public double length(){
-        return Math.sqrt( this.lengthSquared());
+    public double length() {
+        return Math.sqrt(this.lengthSquared());
     }
 
     /**
      * find the normal vector of this vector
+     *
      * @return new vector normalize
      */
     public Vector normalize() {
@@ -102,4 +111,10 @@ public class Vector extends Point{
                 "xyz=" + xyz +
                 '}';
     }
+
+
+
+
+
+
 }
