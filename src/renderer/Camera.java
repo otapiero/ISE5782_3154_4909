@@ -12,8 +12,17 @@ import static primitives.Util.isZero;
  * The type Camera.
  */
 public class Camera {
+    /**
+     * The Vup.
+     */
     static Vector VUP = new Vector(0, 1, 0);
+    /**
+     * The Vright.
+     */
     static Vector VRIGHT = new Vector(1, 0, 0);
+    /**
+     * The Vto.
+     */
     static Vector VTO = new Vector(0, 0, 1);
     /**
      * The Point.
@@ -22,20 +31,24 @@ public class Camera {
     /**
      * The Vright.
      */
-    Vector Vright, /**
+    Vector Vright,
+    /**
      * The Vup.
      */
-    Vup, /**
+    Vup,
+    /**
      * The Vto.
      */
     Vto;
     /**
      * The Height.
      */
-    double height, /**
+    double height,
+    /**
      * The Distance.
      */
-    distance, /**
+    distance,
+    /**
      * The Width.
      */
     width;
@@ -93,7 +106,7 @@ public class Camera {
     /**
      * Returns the point 0
      *
-     * @return point
+     * @return point point
      */
     public Point getPoint() {
         return point;
@@ -102,7 +115,7 @@ public class Camera {
     /**
      * Returns the direction vector to the right
      *
-     * @return vright
+     * @return vright vright
      */
     public Vector getVright() {
         return Vright;
@@ -111,7 +124,7 @@ public class Camera {
     /**
      * Returns the direction vector up
      *
-     * @return vup
+     * @return vup vup
      */
     public Vector getVup() {
         return Vup;
@@ -120,7 +133,7 @@ public class Camera {
     /**
      * Returns the direction vector straight
      *
-     * @return vto
+     * @return vto vto
      */
     public Vector getVto() {
         return Vto;
@@ -129,7 +142,7 @@ public class Camera {
     /**
      * Returns the height of the viewo plane
      *
-     * @return height
+     * @return height height
      */
     public double getHeight() {
         return height;
@@ -138,7 +151,7 @@ public class Camera {
     /**
      * Returns the distance of the view plane from the camera
      *
-     * @return distance
+     * @return distance distance
      */
     public double getDistance() {
         return distance;
@@ -147,7 +160,7 @@ public class Camera {
     /**
      * Returns the width of the viewo plane
      *
-     * @return width
+     * @return width width
      */
     public double getWidth() {
         return width;
@@ -187,7 +200,7 @@ public class Camera {
      * set to the value of the distance from the camera
      *
      * @param distance the distance
-     * @return camera
+     * @return camera vp distance
      */
     public Camera setVPDistance(double distance) {
         this.distance = distance;
@@ -202,7 +215,7 @@ public class Camera {
      * @param nY the n y
      * @param j  the j
      * @param i  the
-     * @return ray
+     * @return ray ray
      */
     public Ray constructRay(int nX, int nY, int j, int i) {
         if (distance == 0) {
@@ -226,6 +239,8 @@ public class Camera {
 
     /**
      * The function writes the pixels to the image
+     *
+     * @return the camera
      */
     public Camera renderImage() {
         if (imageWriter == null || this.rayTracer == null || distance == 0 || this.width == 0 || this.height == 0) {
@@ -268,6 +283,8 @@ public class Camera {
 
     /**
      * The function calls the function "writeToImage" in class "ImageWriter"
+     *
+     * @return the camera
      */
     public Camera writeToImage() {
         if (imageWriter == null) {
@@ -277,11 +294,27 @@ public class Camera {
         return this;
     }
 
+    /**
+     * Move camera camera.
+     *
+     * @param direction the direction
+     * @param distance  the distance
+     * @return the camera
+     */
     public Camera moveCamera(Vector direction, double distance) {
         this.point = this.point.add(direction.scale(distance));
         return this;
     }
 
+    /**
+     * Move camera and point wiew camera.
+     *
+     * @param direction    the direction
+     * @param distance     the distance
+     * @param newWiewPoint the new wiew point
+     * @param angle        the angle
+     * @return the camera
+     */
     public Camera moveCameraAndPointWiew(Vector direction, double distance, Point newWiewPoint,double angle) {
         moveCamera(direction, distance);
         if (!newWiewPoint.equals(point)) {
@@ -302,11 +335,25 @@ public class Camera {
         this.Vright = this.Vto.crossProduct(this.Vup).normalize();
 
     }
+
+    /**
+     * Rotate camera camera.
+     *
+     * @param angle the angle
+     * @return the camera
+     */
     public Camera rotateCamera(double angle) {
         rotateCameraByVto(angle);
         return this;
     }
-    // zoom in or out the camera by the factor
+
+    /**
+     * Zoom camera camera.
+     *
+     * @param factor the factor
+     * @return the camera
+     */
+// zoom in or out the camera by the factor
     public Camera zoomCamera(double factor) {
         this.distance *= factor;
         return this;

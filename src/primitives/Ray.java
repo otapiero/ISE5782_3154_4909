@@ -12,6 +12,8 @@ public class Ray {
      *
      * @return the p 0
      */
+    private static final double DELTA = 0.1;
+
     public Point getP0() {
         return p0;
     }
@@ -38,6 +40,13 @@ public class Ray {
         this.p0 = p0;
         this.dir = dir.normalize();
     }
+    public Ray(Point point, Vector vector, Vector n)
+    {
+        Vector delta = n.scale(n.dotProduct(vector) > 0 ? DELTA : -DELTA);
+        this.p0 = point.add(delta);
+        this.dir = vector;
+    }
+
 
     /**
      * Gets point.
