@@ -20,15 +20,18 @@ public abstract class Intersectable {
                 : geoList.stream().map(gp -> gp.point).toList();
     }
 
-
     /**
      * Find geo intersections list.
      *
      * @param ray the ray
      * @return the list
      */
-    public List<GeoPoint> findGeoIntersections(Ray ray) {
-        return findGeoIntersectionsHelper(ray);
+    public final List<GeoPoint> findGeoIntersections(Ray ray) {
+        return findGeoIntersections(ray, Double.POSITIVE_INFINITY);
+    }
+
+    public final List<GeoPoint> findGeoIntersections(Ray ray, double maxDistance) {
+        return findGeoIntersectionsHelper(ray, maxDistance);
     }
 
     /**
@@ -36,8 +39,9 @@ public abstract class Intersectable {
      *
      * @param ray the ray
      * @return the list
-     */
-    protected abstract   List<GeoPoint> findGeoIntersectionsHelper(Ray ray) ;
+     */    protected abstract List<GeoPoint>
+    findGeoIntersectionsHelper(Ray ray, double maxDistance);
+
 
     /**
      * The type Geo point.

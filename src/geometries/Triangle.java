@@ -37,8 +37,8 @@ public class Triangle extends Polygon{
      * @return list of point that intersect with the triangle
      */
     @Override
-    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
-        List<GeoPoint> result = plane.findGeoIntersectionsHelper(ray);
+    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance) {
+        List<GeoPoint> result = plane.findGeoIntersectionsHelper(ray, maxDistance);
         if (result == null) {
             return null;
         }
@@ -56,7 +56,8 @@ public class Triangle extends Polygon{
                 x2 = alignZero(dir.dotProduct(n2)),
                 x3 = alignZero(dir.dotProduct(n3));
 
-        if((x1 < 0 && x2 < 0 && x3 < 0) || (x1 > 0 && x2 > 0 && x3 > 0)) {
+        if((x1 < 0 && x2 < 0 && x3 < 0) || (x1 > 0 && x2 > 0 && x3 > 0)&&
+                alignZero(ray.getP0().distance(result.get(0).point)-maxDistance)<=0) {
             return List.of(new GeoPoint(this,result.get(0).point));
         }
         return null;

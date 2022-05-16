@@ -1,14 +1,8 @@
 package unittests.imagesTests;
 
-import geometries.Eiphel.Cube;
-import geometries.Eiphel.Pyramid;
-import geometries.Geometry;
-import geometries.Sphere;
-import geometries.Triangle;
+import geometries.Pyramid;
 import lighting.AmbientLight;
-import lighting.DirectionalLight;
 import lighting.PointLight;
-import lighting.SpotLight;
 import primitives.*;
 import renderer.Camera;
 import renderer.ImageWriter;
@@ -17,9 +11,8 @@ import scene.Scene;
 import org.junit.jupiter.api.Test;
 
 import static java.awt.Color.*;
-import static org.junit.jupiter.api.Assertions.*;
 
- class CubeTest {
+class CubeTest {
 
 
         private Scene scene2 = new Scene("Test scene") //
@@ -43,7 +36,7 @@ import static org.junit.jupiter.api.Assertions.*;
      private Color trCL = new Color(200, 200, 250); // Triangles test Color of Light
      private Color spCL = new Color(800, 500, 0); // Sphere test Color of Light
      private Vector trDL = new Vector(-2, -2, -2); // Triangles test Direction of Light
-        private Material material = new Material().setKd(0.5).setKs(0.5).setShininess(300);
+     private Material material = new Material().setKd(0.5).setKs(0.5).setShininess(300);
       @Test
      void testCube() {
         Pyramid cube = new Pyramid(p[0], p[1], p[2], p[3]);
@@ -57,7 +50,7 @@ import static org.junit.jupiter.api.Assertions.*;
          // scene2.lights.add(new DirectionalLight(trCL, new Vector(0,1,-10)));
           // scene2.lights.add(new SpotLight(spCL, new Point(0,0,0), new Vector(1,1,1)).setKl(0.001).setKq(0.0002));
          ImageWriter imageWriter = new ImageWriter("CUbedirectionalLhigt", 900, 900);
-         camera1.moveCameraAndPointWiew(new Vector(1,0,0),60,new Point(-2,-2,-8),0);
+         camera1.moveCameraAndPointWiev(camera1.getPoint().add(new Vector(60,0,0)),new Point(-2,-2,-8),180);
          camera1.setImageWriter(imageWriter) //
                  .setRayTracer(new RayTracerBasic(scene2)) //
                  .renderImage() //

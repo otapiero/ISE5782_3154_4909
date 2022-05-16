@@ -34,10 +34,10 @@ public class Geometries extends Intersectable{
      * @return list of point that intersect with one of the shapes in the set
      */
     @Override
-    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance) {
         List<GeoPoint> result= null ;
         for (var i: geometriesLinkedList) {
-            List<GeoPoint> points=i.findGeoIntersectionsHelper(ray);
+            List<GeoPoint> points=i.findGeoIntersectionsHelper(ray,maxDistance);
             if (points!=null){
                 if (result==null){
                     result=new LinkedList();

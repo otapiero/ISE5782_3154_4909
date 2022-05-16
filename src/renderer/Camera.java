@@ -3,7 +3,6 @@ package renderer;
 import primitives.*;
 
 import java.util.MissingResourceException;
-import java.util.concurrent.ExecutionException;
 
 import static primitives.Util.alignZero;
 import static primitives.Util.isZero;
@@ -309,14 +308,14 @@ public class Camera {
     /**
      * Move camera and point wiew camera.
      *
-     * @param direction    the direction
-     * @param distance     the distance
+     * @param newPosition  the new position
      * @param newWiewPoint the new wiew point
      * @param angle        the angle
      * @return the camera
      */
-    public Camera moveCameraAndPointWiew(Vector direction, double distance, Point newWiewPoint,double angle) {
-        moveCamera(direction, distance);
+    public Camera moveCameraAndPointWiev(Point newPosition, Point newWiewPoint, double angle) {
+        this.point =newPosition;
+
         if (!newWiewPoint.equals(point)) {
 
             this.Vto = newWiewPoint.subtract(this.point).normalize();
@@ -331,7 +330,8 @@ public class Camera {
         double radians = Math.toRadians(angle);
         double cos = Math.cos(radians);
         double sin = Math.sin(radians);
-        this.Vup = new Vector(Vup.getX() * cos - Vup.getY() * sin, Vup.getX() * sin + Vup.getY() * cos, Vup.getZ() * cos - Vup.getZ() * sin).normalize();
+        this.Vup = new Vector(Vup.getX() * cos - Vup.getY() * sin, Vup.getX() * sin + Vup.getY() * cos,
+                Vup.getZ() * cos - Vup.getZ() * sin).normalize();
         this.Vright = this.Vto.crossProduct(this.Vup).normalize();
 
     }

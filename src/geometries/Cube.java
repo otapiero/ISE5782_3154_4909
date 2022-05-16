@@ -1,4 +1,4 @@
-package geometries.Eiphel;
+package geometries;
 
 import geometries.Geometries;
 import geometries.Geometry;
@@ -57,10 +57,10 @@ public class Cube extends Geometry {//private class please  dont look at it!!!!!
     }
 
     @Override
-    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance) {
         List<GeoPoint> tempResult= null ;
         for (var i: polygons) {
-            List<GeoPoint> points=i.findGeoIntersectionsHelper(ray);
+            List<GeoPoint> points=i.findGeoIntersectionsHelper(ray,maxDistance);
             if (points!=null){
                 if (tempResult==null){
                     tempResult=new LinkedList();
