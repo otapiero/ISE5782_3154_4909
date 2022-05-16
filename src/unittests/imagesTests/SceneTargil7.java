@@ -50,7 +50,7 @@ public class SceneTargil7 {
         scene.lights.add(new PointLight(new Color(125, 125, 15), new Point(-12.5,50,-100)));
        scene.lights.add(new PointLight(new Color(100, 50, 150), new Point(-10,10,-152.5)));
         scene.lights.add(new PointLight(new Color(100, 50, 150), new Point(25,10,-152.5)));
-      scene.lights.add(new PointLight(new Color(300, 100, 10),new Point(-10.2, 27.5, -121)));
+      scene.lights.add(new PointLight(new Color(255, 100, 10),new Point(-10.2, 27.5, -121)));
 
         scene.lights.add(new DirectionalLight(new Color(100, 100, 100), new Vector(-1, -2.5, -10)));
         scene.lights.add(new SpotLight(new Color(800, 250, 125), new Point(0,5,-167),new Vector(0,-1,17)));
@@ -73,11 +73,11 @@ public class SceneTargil7 {
         camera.moveCameraAndPointWiev(new Point(-50,12,0),new Point(-10,16,-150),0).zoomCamera(0.7);
 
 
-        camera.setImageWriter(imageWriter2) //
+      /*  camera.setImageWriter(imageWriter2) //
                 .setRayTracer(new RayTracerBasic(scene)) //
                 .renderImage() //
                 .writeToImage(); //
-
+*/
 
     }
 
