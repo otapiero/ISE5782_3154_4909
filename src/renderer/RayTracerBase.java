@@ -3,6 +3,8 @@ package renderer;
 import primitives.*;
 import scene.Scene;
 
+import java.util.List;
+
 /**
  * The type Ray tracer base.
  */
@@ -27,5 +29,5 @@ public abstract class RayTracerBase {
      * @param ray - the traced ray
      * @return - the discovered color
      */
-    public abstract Color traceRay(Ray ray);
+    public abstract Color traceRay(List<Ray> ray);
 }

@@ -1,8 +1,9 @@
 package renderer;
 
 import primitives.*;
+import primitives.Vector;
 
-import java.util.MissingResourceException;
+import java.util.*;
 
 import static primitives.Util.alignZero;
 import static primitives.Util.isZero;
@@ -234,7 +235,58 @@ public class Camera {
 
         return new Ray(point, Pij.subtract(point).normalize());
     }
+    /**
+     * The function gets the number of pixels there are, and also the i and j of a specific pixel in vieow plane
+     * and returns ray through this pixel
+     * use
+     * @param nX the n x
+     * @param nY the n y
+     * @param j  the j
+     * @param i  the
+     * @param numRays  the number of rays for anti-aliasing
+     * @return ray ray
+     */
 
+    public List<Ray> constructRays(int nX, int nY, int j, int i,int numRays) {
+        if (numRays== 0) {
+            throw new IllegalArgumentException("num of rays is 0");
+        }
+        int numRaysInOneCol = (int)Math.ceil(Math.sqrt(numRays));
+        if (numRaysInOneCol == 1) {
+            return List.of(constructRay(nX, nY, j, i));
+        }
+        else {
+         List<Ray> rays = new LinkedList<>();
+            if (distance == 0) {
+                throw new IllegalArgumentException("distance is 0");
+            }
+            Point Pc = point.add(Vto.scale(distance));
+            double Ry = alignZero(height / nY);
+            double Rx = alignZero(width / nX);
+            // Xj = (j - (Nx -1)/2) * Rx
+            double Xj = alignZero((j - ((nX - 1d) / 2d)) * Rx);
+            // Yi = -(i - (Ny - 1)/2) * Ry
+            double Yi = alignZero(-(i - ((nY - 1d) / 2d)) * Ry);
+            Point Pij = Pc;
+            if (Xj != 0d) Pij = Pij.add(Vright.scale(Xj));
+            if (Yi != 0d) Pij = Pij.add(Vup.scale(Yi));
+            if (Pij.equals(point)) throw new IllegalArgumentException("the point is the same as the camera");
+            //Ray(point, Pij.subtract(point).normalize();
+            double pY = alignZero(Ry / numRaysInOneCol);
+            double pX = alignZero(Rx / numRaysInOneCol);
+            Point Pij1 = Pij;
+            for (int k = 1; k < numRaysInOneCol; k++) {
+                for (int l = 1; l < numRaysInOneCol; l++) {
+                    Pij1 = Pij.add(Vright.scale(pX * l)).add(Vup.scale(pY * k));
+                    rays.add(new Ray(point, Pij1.subtract(point).normalize()));
+                }
+            }
+
+
+         return rays;
+        }
+
+    }
 
     /**
      * The function writes the pixels to the image
@@ -255,7 +307,7 @@ public class Camera {
     }
 
     private Color castRay(int i, int j) {
-        return rayTracer.traceRay(this.constructRay(imageWriter.getNx(), imageWriter.getNy(), i, j));
+        return rayTracer.traceRay(this.constructRays(imageWriter.getNx(), imageWriter.getNy(), i, j,imageWriter.getNumRays()));
     }
 
 

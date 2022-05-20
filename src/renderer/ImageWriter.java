@@ -28,6 +28,13 @@ public class ImageWriter {
 	
 	private Logger logger = Logger.getLogger("ImageWriter");
 
+	public ImageWriter setNumRays(int numRays) {
+		this.numRays = numRays;
+		return this;
+	}
+
+	private int numRays;
+
 	// ***************** Constructors ********************** //
 	/**
 	 * Image Writer constructor accepting image name and View Plane parameters,
@@ -39,7 +46,7 @@ public class ImageWriter {
 		this.imageName = imageName;
 		this.nX = nX;
 		this.nY = nY;
-
+		this.numRays=1;
 		image = new BufferedImage(nX, nY, BufferedImage.TYPE_INT_RGB);
 	}
 
@@ -90,4 +97,7 @@ public class ImageWriter {
 		image.setRGB(xIndex, yIndex, color.getColor().getRGB());
 	}
 
+	public int getNumRays() {
+		return this.numRays;
+	}
 }

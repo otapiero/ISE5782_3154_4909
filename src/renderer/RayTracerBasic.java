@@ -7,6 +7,7 @@ import scene.*;
 
 import java.util.*;
 
+import static java.awt.Color.BLACK;
 import static primitives.Util.alignZero;
 
 /**
@@ -71,11 +72,18 @@ public class RayTracerBasic extends RayTracerBase {
      * implementation of super class trace ray method
      */
     @Override
-    public Color traceRay(Ray ray) {
-        GeoPoint closeIntersections= findClosestIntersection(ray);
-        if (closeIntersections==null)
-            return scene.background;
-        return calcColor(closeIntersections,ray);
+    public Color traceRay(List<Ray> rays) {
+        Color color=new Color(BLACK);
+        for (Ray r : rays) {
+            GeoPoint closeIntersections= findClosestIntersection(r);
+            if (closeIntersections==null)
+             color= color.add( scene.background);
+            else {
+             color= color.add(calcColor(closeIntersections,r));
+            }
+
+        }
+        return color.reduce(rays.size());
     }
 
     /**
@@ -84,7 +92,7 @@ public class RayTracerBasic extends RayTracerBase {
      * @param ray
      * @return
      */
-    private Color calcLocalEffects(GeoPoint gp, Ray ray) {
+   /* private Color calcLocalEffects(GeoPoint gp, Ray ray) {
         Color color = gp.geometry.getEmission();
         Vector v = ray.getDir ();
         Vector n = gp.geometry.getNormal(gp.point);
@@ -105,9 +113,10 @@ public class RayTracerBasic extends RayTracerBase {
             }
         }
         return color;
-    }
+    }*/
 
     private Color calcLocalEffects(GeoPoint gp, Ray ray,Double3 k) {
+
         Color color = gp.geometry.getEmission();
         Vector v = ray.getDir ();
         Vector n = gp.geometry.getNormal(gp.point);
@@ -165,7 +174,7 @@ public class RayTracerBasic extends RayTracerBase {
 
     private Color calcColor(GeoPoint gp,Ray ray,int level, Double3 k ) {
         Color color = calcLocalEffects(gp,ray,k);
-        if(level == 1) return color;
+        //Color color = calcLocalEffects(gp,ray,k).scale(Double3.ONE.subtract(gp.geometry.getMaterial().kT));
         return 1 == level ? color : color.add(calcGlobalEffects(gp, ray, level, k));
     }
 

@@ -57,7 +57,7 @@ public class SceneTargil7 {
 
 
 
-        ImageWriter imageWriter = new ImageWriter("SceneTargil7_1", 1000, 1000);
+        ImageWriter imageWriter = new ImageWriter("SceneTargil7_1", 600, 600);
         ImageWriter imageWriter2 = new ImageWriter("SceneTargil7_2", 1000, 1000);
         ImageWriter imageWriter3 = new ImageWriter("SceneTargil7_3", 1000, 1000);
         ImageWriter imageWriter4 = new ImageWriter("SceneTargil7_4", 1000, 1000);
@@ -65,7 +65,7 @@ public class SceneTargil7 {
         camera.moveCamera(new Vector(1,0,0.5),30)
                 .moveCameraAndPointWiev(camera.getPoint(),new Point(-10,12,-150),-6).zoomCamera(0.9);
 
-        camera.setImageWriter(imageWriter) //
+        camera.setImageWriter(imageWriter.setNumRays(25)) //
                 .setRayTracer(new RayTracerBasic(scene)) //
                 .renderImage() //
                 .writeToImage(); //
