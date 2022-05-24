@@ -30,10 +30,10 @@ public class SceneTargil7 {
     private Plane plane = new Plane(new Point(1, 1, 0),new Point(0,1,0),new Point(0,1,1));
     private Plane skyPlane = new Plane(new Point(0,0,-190),new Vector(0,0,1));
     private Sphere sphere = new Sphere(new Point(-12, 10, -140),6);
-    private Point[] p = { // The Triangles' vertices:
-            new Point(-25, 1, -165), // the shared left-bottom
-            new Point(0, 1, -165), // the shared right-top
-            new Point(0, 1, -140), // the right-bottom
+    private Point[] p = {
+            new Point(-25, 1, -165),
+            new Point(0, 1, -165),
+            new Point(0, 1, -140),
             new Point(-25, 1, -140)};
     Pyramid pyramid = new Pyramid(p[0], p[1], p[2], p[3]);
 
@@ -65,7 +65,7 @@ public class SceneTargil7 {
         camera.moveCamera(new Vector(1,0,0.5),30)
                 .moveCameraAndPointWiev(camera.getPoint(),new Point(-10,12,-150),-6).zoomCamera(0.9);
 
-        camera.setImageWriter(imageWriter.setNumRays(25)) //
+        camera.setImageWriter(imageWriter) //
                 .setRayTracer(new RayTracerBasic(scene)) //
                 .renderImage() //
                 .writeToImage(); //

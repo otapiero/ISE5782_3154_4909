@@ -9,6 +9,7 @@ import java.util.*;
 
 import static java.awt.Color.BLACK;
 import static primitives.Util.alignZero;
+import static primitives.Util.isZero;
 
 /**
  * The type Ray tracer basic.
@@ -18,6 +19,9 @@ public class RayTracerBasic extends RayTracerBase {
 
     private static final int MAX_CALC_COLOR_LEVEL = 10;
     private static final double MIN_CALC_COLOR_K = 0.001;
+
+    private double distanceGlossinessAndReflectionGrid = 10000;
+    private int glossinessAndReflectionRaysNum = 16;
 
 
     /**
@@ -139,16 +143,16 @@ public class RayTracerBasic extends RayTracerBase {
         return color;
     }
 
-    private Ray constructReflectedRay(Vector n, Point geoPoint, Ray inRay)
+    private List<Ray> constructReflectedRays(Vector n, GeoPoint geoPoint, Ray inRay)
     {
         Vector v = inRay.getDir();
         double vn = v.dotProduct(n);
         Vector reflected = v.subtract(n.scale(2*v.dotProduct(n))).normalize();
-        return new Ray(geoPoint, reflected, n);
+        return raysGrid( new Ray(geoPoint.point,reflected,n),1,geoPoint.geometry.getMaterial().getDiffusedAndGlossy(), n);
     }
-    private Ray constructRefractedRay(Vector n, Point geoPoint, Ray inRay)
+    private List<Ray> constructRefractedRays(Vector n, GeoPoint geoPoint, Ray inRay)
     {
-        return new Ray(geoPoint, inRay.getDir(), n);
+        return raysGrid(new Ray(geoPoint.point, inRay.getDir(), n),-1,geoPoint.geometry.getMaterial().getDiffusedAndGlossy(), n);
     }
     private GeoPoint findClosestIntersection(Ray ray)
     {
@@ -187,24 +191,71 @@ public class RayTracerBasic extends RayTracerBase {
     {
         Color color = Color.BLACK;
         Double3 kr = gp.geometry.getMaterial().kR, kkr = k.product(kr);
+        Color tempColor = new Color(BLACK);
         if (! kkr.lowerThan(MIN_CALC_COLOR_K))
         {
-            Ray reflectedRay = constructReflectedRay(gp.geometry.getNormal(gp.point), gp.point,ray );
-            GeoPoint reflectedPoint = findClosestIntersection(reflectedRay);
-            if(reflectedPoint != null)color = color.add(calcColor(reflectedPoint, reflectedRay, level-1, kkr).scale(kr));
-
+            List<Ray> reflectedRays = constructReflectedRays(gp.geometry.getNormal(gp.point), gp,ray );
+            if (reflectedRays.size()!=0) {
+                for (Ray reflectedRay : reflectedRays) {
+                    GeoPoint reflectedPoint = findClosestIntersection(reflectedRay);
+                        tempColor = tempColor.add(reflectedPoint == null ?primitives.Color.BLACK:
+                                calcColor(reflectedPoint, reflectedRay, level - 1, kkr).scale(kr));
+                }
+                color = color.add(tempColor.reduce(reflectedRays.size()));
+            }
         }
 
         Double3 kt = gp.geometry.getMaterial().kT, kkt = k.product(kt);
-        if (! kkt.lowerThan(MIN_CALC_COLOR_K))
-        {
-            Ray refractedRay = constructRefractedRay(gp.geometry.getNormal(gp.point),gp.point, ray);
-            GeoPoint refractedPoint = findClosestIntersection(refractedRay);
-            if(refractedPoint != null)color = color.add(calcColor(refractedPoint, refractedRay, level-1,kkt).scale(kt));
-
+        if (! kkt.lowerThan(MIN_CALC_COLOR_K)) {
+            tempColor = new Color(BLACK);
+            List<Ray> refractedRays = constructRefractedRays(gp.geometry.getNormal(gp.point), gp, ray);
+            if (refractedRays.size() != 0) {
+                for (Ray refractedRay : refractedRays) {
+                    GeoPoint refractedPoint = findClosestIntersection(refractedRay);
+                    tempColor = color.add(refractedPoint == null ? primitives.Color.BLACK :
+                            calcColor(refractedPoint, refractedRay, level - 1, kkt).scale(kt));
+                }
+                color = color.add(tempColor.reduce(refractedRays.size()));
+            }
         }
+
 
         return color;
     }
+    List<Ray> raysGrid(Ray ray, int direction, double glossynessAndDiffuseness, Vector n){
+        int numOfRowCol = isZero(glossynessAndDiffuseness)? 1: (int)Math.ceil(Math.sqrt(glossinessAndReflectionRaysNum));
+        if (numOfRowCol == 1) return List.of(ray);
+        var a = findClosestIntersection(ray);
+        if (a == null) return List.of(ray);
+        Vector Vup ;
+        double Ax= Math.abs(ray.getDir().getX()), Ay= Math.abs(ray.getDir().getY()), Az= Math.abs(ray.getDir().getZ());
+        if (Ax < Ay)
+            Vup= Ax < Az ?  new Vector(0, -ray.getDir().getZ(), ray.getDir().getY()) :
+                    new Vector(-ray.getDir().getY(), ray.getDir().getX(), 0);
+        else
+            Vup= Ay < Az ?  new Vector(ray.getDir().getZ(), 0, -ray.getDir().getX()) :
+                    new Vector(-ray.getDir().getY(), ray.getDir().getX(), 0);
+        Vector Vright = Vup.crossProduct(ray.getDir()).normalize();
+        Point pc=ray.getDir().scale(distanceGlossinessAndReflectionGrid);
+        double step = glossynessAndDiffuseness/numOfRowCol;
+        Point pij=pc.add(Vright.scale(numOfRowCol/2*-step)).add(Vup.scale(numOfRowCol/2*-step));
+        Vector tempRayVector;
+        Point tempPij;
+
+        List<Ray> rays = new ArrayList<>();
+        rays.add(ray);
+        for (int i = 1; i < numOfRowCol; i++) {
+            for (int j = 1; j < numOfRowCol; j++) {
+                tempPij=pij.add(Vright.scale(i*step)).add(Vup.scale(j*step));
+                tempRayVector =  tempPij.subtract(ray.getP0());
+                if(n.dotProduct(tempRayVector) < 0 && direction == 1) //refraction
+                    rays.add(new Ray(ray.getP0(), tempRayVector));
+                if(n.dotProduct(tempRayVector) > 0 && direction == -1) //reflection
+                    rays.add(new Ray(ray.getP0(), tempRayVector));
+            }
+        }
+        return rays;
+    }
 
 }
+

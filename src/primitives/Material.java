@@ -95,8 +95,21 @@ public class Material {
      * The K t.
      */
     kT=Double3.ZERO;
+
+    public Material setDiffusedAndGlossy(double diffusedAndGlossy) {
+        this.diffusedAndGlossy = diffusedAndGlossy;
+        return this;
+    }
+
+    public double getDiffusedAndGlossy() {
+        return diffusedAndGlossy;
+    }
+    public double diffusedAndGlossy=0;
+
     /**
      * The N shininess.
      */
     public int nShininess=0;
+
+
 }

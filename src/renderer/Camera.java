@@ -61,6 +61,18 @@ public class Camera {
      */
     RayTracerBase rayTracer;
 
+    private int numRays=1;
+
+    public Camera setNumRays(int numRays) {
+        this.numRays = numRays;
+        return this;
+    }
+
+    public int getNumRays() {
+        return this.numRays;
+    }
+
+
     /**
      * Gets image writer.
      *
@@ -251,8 +263,7 @@ public class Camera {
         if (numRays== 0) {
             throw new IllegalArgumentException("num of rays is 0");
         }
-        int numRaysInOneCol = (int)Math.ceil(Math.sqrt(numRays));
-        if (numRaysInOneCol == 1) {
+        if (numRays == 1) {
             return List.of(constructRay(nX, nY, j, i));
         }
         else {
@@ -272,11 +283,12 @@ public class Camera {
             if (Yi != 0d) Pij = Pij.add(Vup.scale(Yi));
             if (Pij.equals(point)) throw new IllegalArgumentException("the point is the same as the camera");
             //Ray(point, Pij.subtract(point).normalize();
-            double pY = alignZero(Ry / numRaysInOneCol);
-            double pX = alignZero(Rx / numRaysInOneCol);
+            double pY = alignZero(Ry / numRays);
+            double pX = alignZero(Rx / numRays);
+            Pij = Pij.add(Vright.scale(-Rx/2 )).add(Vup.scale(-Ry/2));;
             Point Pij1 = Pij;
-            for (int k = 1; k < numRaysInOneCol; k++) {
-                for (int l = 1; l < numRaysInOneCol; l++) {
+            for (int k = 1; k < numRays; k++) {
+                for (int l = 1; l < numRays; l++) {
                     Pij1 = Pij.add(Vright.scale(pX * l)).add(Vup.scale(pY * k));
                     rays.add(new Ray(point, Pij1.subtract(point).normalize()));
                 }
@@ -307,7 +319,7 @@ public class Camera {
     }
 
     private Color castRay(int i, int j) {
-        return rayTracer.traceRay(this.constructRays(imageWriter.getNx(), imageWriter.getNy(), i, j,imageWriter.getNumRays()));
+        return rayTracer.traceRay(this.constructRays(imageWriter.getNx(), imageWriter.getNy(), i, j,numRays));
     }
 
 

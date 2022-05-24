@@ -11,8 +11,8 @@ public class EiphelTower extends Geometry {
     private List<Geometry> geometries;
 
     private double distance;
-    private static final double LEGS_DISTANCE = 0.14;
-    private static final double LEGS_HEIGHT = 0.2d;
+    private static final double LEGS_DISTANCE = 0.19;
+    private static final double LEGS_HEIGHT = 0.24d;
     private static final double BASE_HEIGHT = 1/12d;
     private static final double HEAD_HEIGHT = 1.2;
     private Vector diagonal1, diagonal2,depth,height,width;
@@ -22,11 +22,12 @@ public class EiphelTower extends Geometry {
         diagonal2 =p3.subtract(p1).normalize();
         width =p1.subtract(p0).normalize();
         depth =p3.subtract(p0).normalize();
-        height = depth.crossProduct(width);
+        height = width.crossProduct(depth);
 
         geometries = new ArrayList<>();
         var p=baseTower(p0, p1, p2, p3);
-        headTower(p.get(0),p.get(1),p.get(2),p.get(3));
+        p = headTower(p.get(0),p.get(1),p.get(2),p.get(3));
+        pickTower(p.get(0),p.get(1),p.get(2),p.get(3));
     }
 
     private List<Point> baseTower(Point p0, Point p1, Point p2, Point p3){
@@ -35,15 +36,15 @@ public class EiphelTower extends Geometry {
        double baseHeight = distance*BASE_HEIGHT;
 
        var p= legsTower(p0, p1, p2, p3,LEGS_DISTANCE,LEGS_HEIGHT,1.3d);
-       p4=p.get(0).add(height.scale(baseHeight)).add(diagonal1.scale(0.7));
-       p5=p.get(1).add(height.scale(baseHeight)).add(diagonal2.scale(0.7));
-       p6=p.get(2).add(height.scale(baseHeight)).add(diagonal1.scale(-0.7));
-       p7=p.get(3).add(height.scale(baseHeight)).add(diagonal2.scale(-0.7));
+       p4=p.get(0).add(height.scale(baseHeight)).add(diagonal1.scale(1));
+       p5=p.get(1).add(height.scale(baseHeight)).add(diagonal2.scale(1));
+       p6=p.get(2).add(height.scale(baseHeight)).add(diagonal1.scale(-1));
+       p7=p.get(3).add(height.scale(baseHeight)).add(diagonal2.scale(-1));
        geometries.add(new Cube(p.get(0), p.get(1), p.get(2), p.get(3),p4,p5,p6,p7));
 
 
 
-        p= legsTower(p4, p5, p6, p7,LEGS_DISTANCE*0.7,LEGS_HEIGHT*0.8,0.8);
+        p= legsTower(p4, p5, p6, p7,LEGS_DISTANCE*0.8,LEGS_HEIGHT*0.8,0.8);
         p4=p.get(0).add(diagonal1.scale(-0.02*distance));
         p5=p.get(1).add(diagonal2.scale(-0.02*distance));
         p6=p.get(2).add(diagonal1.scale(0.02*distance));
@@ -55,11 +56,44 @@ public class EiphelTower extends Geometry {
         p5=p.get(1).add(height.scale(baseHeight*2)).add(diagonal2.scale(1.5));
         p6=p.get(2).add(height.scale(baseHeight*2)).add(diagonal1.scale(-1.5));
         p7=p.get(3).add(height.scale(baseHeight*2)).add(diagonal2.scale(-1.5));
-        geometries.add(new Cube(p.get(0).add(height.scale(baseHeight*0.5)), p.get(1).add(height.scale(baseHeight*0.5)),
-                p.get(2).add(height.scale(baseHeight*0.5)), p.get(3).add(height.scale(baseHeight*0.5)),p4,p5,p6,p7));
+        geometries.add(new Cube(p.get(0).add(height.scale(baseHeight*-0.5)),p.get(1).add(height.scale(baseHeight*-0.5)),
+                p.get(2).add(height.scale(baseHeight*-0.5)), p.get(3).add(height.scale(baseHeight*-0.5)),p4,p5,p6,p7));
         return List.of(p4,p5,p6,p7);
     }
-    private void headTower(Point p0, Point p1, Point p2, Point p3){
+    private void pickTower(Point p0, Point p1, Point p2, Point p3) {
+        Point p4, p5, p6, p7;
+        p4 = p0.add(height.scale(distance * 0.1)).add(diagonal1.scale(-1));
+        p5 = p1.add(height.scale(distance * 0.1)).add(diagonal2.scale(-1));
+        p6 = p2.add(height.scale(distance * 0.1)).add(diagonal1.scale(1));
+        p7 = p3.add(height.scale(distance * 0.1)).add(diagonal2.scale(1));
+
+        geometries.add(new Cube(p0, p1, p2, p3, p4, p5, p6, p7));
+        p0 = p4.add(diagonal1.scale(0.2));
+        p1 = p5.add(diagonal2.scale(0.2));
+        p2 = p6.add(diagonal1.scale(-0.2));
+        p3 = p7.add(diagonal2.scale(-0.2));
+        geometries.add(new Cube(p0, p1, p2, p3, p0.add(height.scale(0.5)),
+                p1.add(height.scale(0.5)), p2.add(height.scale(0.5)),
+                p3.add(height.scale(0.5))));
+        p0 = p4.add(height.scale(0.5));
+        p1 = p5.add(height.scale(0.5));
+        p2 = p6.add(height.scale(0.5));
+        p3 = p7.add(height.scale(0.5));
+        p4=p0.add(height.scale(distance * 0.1)).add(diagonal1.scale(2.2));
+        p5=p1.add(height.scale(distance * 0.1)).add(diagonal2.scale(2.2));
+        p6=p2.add(height.scale(distance * 0.1)).add(diagonal1.scale(-2.2));
+        p7=p3.add(height.scale(distance * 0.1)).add(diagonal2.scale(-2.2));
+        geometries.add(new Cube(p0, p1, p2, p3, p4, p5, p6, p7));
+        geometries.add(new Cube(p4, p5, p6, p7, p4.add(height.scale(0.9)), p5.add(height.scale(0.9)),
+                p6.add(height.scale(0.9)), p7.add(height.scale(0.9))));
+
+        System.out.println(p4);
+
+
+    }
+
+
+    private List<Point> headTower(Point p0, Point p1, Point p2, Point p3){
         Point p4,p5,p6,p7;
         p4=p0.add(height.scale(HEAD_HEIGHT*distance*0.07)).add(diagonal1.scale(0.5));
         p5=p1.add(height.scale(HEAD_HEIGHT*distance*0.07)).add(diagonal2.scale(0.5));
@@ -80,10 +114,10 @@ public class EiphelTower extends Geometry {
         p1=p5;
         p2=p6;
         p3=p7;
-        p4=p0.add(height.scale(HEAD_HEIGHT*distance*0.09)).add(diagonal1.scale(0.1));
-        p5=p1.add(height.scale(HEAD_HEIGHT*distance*0.09)).add(diagonal2.scale(0.1));
-        p6=p2.add(height.scale(HEAD_HEIGHT*distance*0.09)).add(diagonal1.scale(-0.1));
-        p7=p3.add(height.scale(HEAD_HEIGHT*distance*0.09)).add(diagonal2.scale(-0.1));
+        p4=p0.add(height.scale(HEAD_HEIGHT*distance*0.09)).add(diagonal1.scale(0.2));
+        p5=p1.add(height.scale(HEAD_HEIGHT*distance*0.09)).add(diagonal2.scale(0.2));
+        p6=p2.add(height.scale(HEAD_HEIGHT*distance*0.09)).add(diagonal1.scale(-0.2));
+        p7=p3.add(height.scale(HEAD_HEIGHT*distance*0.09)).add(diagonal2.scale(-0.2));
         geometries.add(new Cube(p0, p1, p2, p3,p4,p5,p6,p7));
         p0=p4;
         p1=p5;
@@ -95,6 +129,7 @@ public class EiphelTower extends Geometry {
         p6=p2.add(height.scale(HEAD_HEIGHT*distance*0.5)).add(diagonal1.scale(-1.2));
         p7=p3.add(height.scale(HEAD_HEIGHT*distance*0.5)).add(diagonal2.scale(-1.2));
         geometries.add(new Cube(p0, p1, p2, p3,p4,p5,p6,p7));
+        return List.of(p4,p5,p6,p7);
     }
     private List<Point> legsTower(Point p00, Point p11, Point p22, Point p33,double legDistance,double legHeight,double factorDiagonal){
         Point center = p00.add(diagonal1.scale(p00.distance(p22)));
