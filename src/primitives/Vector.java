@@ -113,8 +113,14 @@ public class Vector extends Point {
     }
 
 
-
-
-
-
+    public Vector findRandomOrthogonal() {
+        double x = this.getX();
+        double y = this.getY();
+        double z = this.getZ();
+        double Ax= Math.abs(x), Ay= Math.abs(y), Az= Math.abs(z);
+        if (Ax < Ay)
+            return Ax < Az ?  new Vector(0, -z, y) : new Vector(-y, x, 0);
+        else
+            return Ay < Az ?  new Vector(z, 0, -x) : new Vector(-y, x, 0);
+    }
 }

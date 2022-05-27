@@ -20,7 +20,8 @@ public class RayTracerBasic extends RayTracerBase {
     private static final int MAX_CALC_COLOR_LEVEL = 10;
     private static final double MIN_CALC_COLOR_K = 0.001;
 
-    private double distanceGlossinessAndReflectionGrid = 10000;
+    private double distanceGlossinessAndReflectionGrid = 50;
+    private double sizeOfGrid=5;
     private int glossinessAndReflectionRaysNum = 16;
 
 
@@ -148,11 +149,11 @@ public class RayTracerBasic extends RayTracerBase {
         Vector v = inRay.getDir();
         double vn = v.dotProduct(n);
         Vector reflected = v.subtract(n.scale(2*v.dotProduct(n))).normalize();
-        return raysGrid( new Ray(geoPoint.point,reflected,n),1,geoPoint.geometry.getMaterial().getDiffusedAndGlossy(), n);
+        return raysGrid( new Ray(geoPoint.point,reflected,n),-1,geoPoint.geometry.getMaterial().getDiffusedAndGlossy(), n);
     }
     private List<Ray> constructRefractedRays(Vector n, GeoPoint geoPoint, Ray inRay)
     {
-        return raysGrid(new Ray(geoPoint.point, inRay.getDir(), n),-1,geoPoint.geometry.getMaterial().getDiffusedAndGlossy(), n);
+        return raysGrid(new Ray(geoPoint.point, inRay.getDir(), n),1,geoPoint.geometry.getMaterial().getDiffusedAndGlossy(), n);
     }
     private GeoPoint findClosestIntersection(Ray ray)
     {
@@ -225,8 +226,6 @@ public class RayTracerBasic extends RayTracerBase {
     List<Ray> raysGrid(Ray ray, int direction, double glossynessAndDiffuseness, Vector n){
         int numOfRowCol = isZero(glossynessAndDiffuseness)? 1: (int)Math.ceil(Math.sqrt(glossinessAndReflectionRaysNum));
         if (numOfRowCol == 1) return List.of(ray);
-        var a = findClosestIntersection(ray);
-        if (a == null) return List.of(ray);
         Vector Vup ;
         double Ax= Math.abs(ray.getDir().getX()), Ay= Math.abs(ray.getDir().getY()), Az= Math.abs(ray.getDir().getZ());
         if (Ax < Ay)
@@ -236,8 +235,8 @@ public class RayTracerBasic extends RayTracerBase {
             Vup= Ay < Az ?  new Vector(ray.getDir().getZ(), 0, -ray.getDir().getX()) :
                     new Vector(-ray.getDir().getY(), ray.getDir().getX(), 0);
         Vector Vright = Vup.crossProduct(ray.getDir()).normalize();
-        Point pc=ray.getDir().scale(distanceGlossinessAndReflectionGrid);
-        double step = glossynessAndDiffuseness/numOfRowCol;
+        Point pc=ray.getPoint(distanceGlossinessAndReflectionGrid);
+        double step = glossynessAndDiffuseness/sizeOfGrid;
         Point pij=pc.add(Vright.scale(numOfRowCol/2*-step)).add(Vup.scale(numOfRowCol/2*-step));
         Vector tempRayVector;
         Point tempPij;
@@ -254,6 +253,7 @@ public class RayTracerBasic extends RayTracerBase {
                     rays.add(new Ray(ray.getP0(), tempRayVector));
             }
         }
+
         return rays;
     }
 
