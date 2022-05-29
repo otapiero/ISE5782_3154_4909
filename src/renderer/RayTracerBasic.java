@@ -199,7 +199,7 @@ public class RayTracerBasic extends RayTracerBase {
             if (reflectedRays.size()!=0) {
                 for (Ray reflectedRay : reflectedRays) {
                     GeoPoint reflectedPoint = findClosestIntersection(reflectedRay);
-                        tempColor = tempColor.add(reflectedPoint == null ?primitives.Color.BLACK:
+                        tempColor = tempColor.add(reflectedPoint == null ?scene.background:
                                 calcColor(reflectedPoint, reflectedRay, level - 1, kkr).scale(kr));
                 }
                 color = color.add(tempColor.reduce(reflectedRays.size()));
@@ -213,7 +213,7 @@ public class RayTracerBasic extends RayTracerBase {
             if (refractedRays.size() != 0) {
                 for (Ray refractedRay : refractedRays) {
                     GeoPoint refractedPoint = findClosestIntersection(refractedRay);
-                    tempColor = color.add(refractedPoint == null ? primitives.Color.BLACK :
+                    tempColor = color.add(refractedPoint == null ? scene.background:
                             calcColor(refractedPoint, refractedRay, level - 1, kkt).scale(kt));
                 }
                 color = color.add(tempColor.reduce(refractedRays.size()));
