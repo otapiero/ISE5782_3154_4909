@@ -149,11 +149,11 @@ public class RayTracerBasic extends RayTracerBase {
         Vector v = inRay.getDir();
         double vn = v.dotProduct(n);
         Vector reflected = v.subtract(n.scale(2*v.dotProduct(n))).normalize();
-        return raysGrid( new Ray(geoPoint.point,reflected,n),-1,geoPoint.geometry.getMaterial().getDiffusedAndGlossy(), n);
+        return raysGrid( new Ray(geoPoint.point,reflected,n),1,geoPoint.geometry.getMaterial().getDiffusedAndGlossy(), n);
     }
     private List<Ray> constructRefractedRays(Vector n, GeoPoint geoPoint, Ray inRay)
     {
-        return raysGrid(new Ray(geoPoint.point, inRay.getDir(), n),1,geoPoint.geometry.getMaterial().getDiffusedAndGlossy(), n);
+        return raysGrid(new Ray(geoPoint.point, inRay.getDir(), n),-1,geoPoint.geometry.getMaterial().getDiffusedAndGlossy(), n);
     }
     private GeoPoint findClosestIntersection(Ray ray)
     {
@@ -199,7 +199,7 @@ public class RayTracerBasic extends RayTracerBase {
             if (reflectedRays.size()!=0) {
                 for (Ray reflectedRay : reflectedRays) {
                     GeoPoint reflectedPoint = findClosestIntersection(reflectedRay);
-                        tempColor = tempColor.add(reflectedPoint == null ?scene.background:
+                        tempColor = tempColor.add(reflectedPoint == null ?primitives.Color.BLACK:
                                 calcColor(reflectedPoint, reflectedRay, level - 1, kkr).scale(kr));
                 }
                 color = color.add(tempColor.reduce(reflectedRays.size()));
@@ -213,7 +213,7 @@ public class RayTracerBasic extends RayTracerBase {
             if (refractedRays.size() != 0) {
                 for (Ray refractedRay : refractedRays) {
                     GeoPoint refractedPoint = findClosestIntersection(refractedRay);
-                    tempColor = color.add(refractedPoint == null ? scene.background:
+                    tempColor = color.add(refractedPoint == null ? primitives.Color.BLACK :
                             calcColor(refractedPoint, refractedRay, level - 1, kkt).scale(kt));
                 }
                 color = color.add(tempColor.reduce(refractedRays.size()));
