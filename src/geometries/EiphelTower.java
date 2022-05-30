@@ -52,20 +52,20 @@ public class EiphelTower extends Geometry {
         geometries.add(new Cube(p4, p5, p6, p7,
                 p4.add(height.scale(baseHeight*0.7)),p5.add(height.scale(BASE_HEIGHT*distance*0.7)),
                 p6.add(height.scale(baseHeight*0.7)), p7.add(height.scale(BASE_HEIGHT*distance*0.7))));
-        p4=p.get(0).add(height.scale(baseHeight*2)).add(diagonal1.scale(0.1*distance));
-        p5=p.get(1).add(height.scale(baseHeight*2)).add(diagonal2.scale(0.1*distance));
-        p6=p.get(2).add(height.scale(baseHeight*2)).add(diagonal1.scale(-0.1*distance));
-        p7=p.get(3).add(height.scale(baseHeight*2)).add(diagonal2.scale(-0.1*distance));
+        p4=p.get(0).add(height.scale(baseHeight*2)).add(diagonal1.scale(0.12*distance));
+        p5=p.get(1).add(height.scale(baseHeight*2)).add(diagonal2.scale(0.12*distance));
+        p6=p.get(2).add(height.scale(baseHeight*2)).add(diagonal1.scale(-0.12*distance));
+        p7=p.get(3).add(height.scale(baseHeight*2)).add(diagonal2.scale(-0.12*distance));
         geometries.add(new Cube(p.get(0).add(height.scale(baseHeight*-0.5)),p.get(1).add(height.scale(baseHeight*-0.5)),
                 p.get(2).add(height.scale(baseHeight*-0.5)), p.get(3).add(height.scale(baseHeight*-0.5)),p4,p5,p6,p7));
         return List.of(p4,p5,p6,p7);
     }
     private void pickTower(Point p0, Point p1, Point p2, Point p3) {
         Point p4, p5, p6, p7;
-        p4 = p0.add(height.scale(distance * 0.1)).add(diagonal1.scale(-0.05*distance));
-        p5 = p1.add(height.scale(distance * 0.1)).add(diagonal2.scale(-0.05*distance));
-        p6 = p2.add(height.scale(distance * 0.1)).add(diagonal1.scale(0.05*distance));
-        p7 = p3.add(height.scale(distance * 0.1)).add(diagonal2.scale(0.05*distance));
+        p4 = p0.add(height.scale(distance * 0.1)).add(diagonal1.scale(-0.055*distance));
+        p5 = p1.add(height.scale(distance * 0.1)).add(diagonal2.scale(-0.055*distance));
+        p6 = p2.add(height.scale(distance * 0.1)).add(diagonal1.scale(0.055*distance));
+        p7 = p3.add(height.scale(distance * 0.1)).add(diagonal2.scale(0.055*distance));
 
         geometries.add(new Cube(p0, p1, p2, p3, p4, p5, p6, p7));
         p0 = p4.add(diagonal1.scale(0.01*distance));
@@ -78,10 +78,10 @@ public class EiphelTower extends Geometry {
         p1 = p5.add(height.scale(0.025*distance));
         p2 = p6.add(height.scale(0.025*distance));
         p3 = p7.add(height.scale(0.025*distance));
-        p4=p0.add(height.scale(distance * 0.1)).add(diagonal1.scale(0.11*distance));
-        p5=p1.add(height.scale(distance * 0.1)).add(diagonal2.scale(0.11*distance));
-        p6=p2.add(height.scale(distance * 0.1)).add(diagonal1.scale(-0.11*distance));
-        p7=p3.add(height.scale(distance * 0.1)).add(diagonal2.scale(-0.11*distance));
+        p4=p0.add(height.scale(distance * 0.1)).add(diagonal1.scale(0.152*distance));
+        p5=p1.add(height.scale(distance * 0.1)).add(diagonal2.scale(0.152*distance));
+        p6=p2.add(height.scale(distance * 0.1)).add(diagonal1.scale(-0.152*distance));
+        p7=p3.add(height.scale(distance * 0.1)).add(diagonal2.scale(-0.152*distance));
         geometries.add(new Cube(p0, p1, p2, p3, p4, p5, p6, p7));
         geometries.add(new Cube(p4, p5, p6, p7, p4.add(height.scale(0.045*distance)), p5.add(height.scale(0.045*distance)),
                 p6.add(height.scale(0.045*distance)), p7.add(height.scale(0.045*distance))));
@@ -94,20 +94,20 @@ public class EiphelTower extends Geometry {
 
     private List<Point> headTower(Point p0, Point p1, Point p2, Point p3){
         Point p4,p5,p6,p7;
-        p4=p0.add(height.scale(HEAD_HEIGHT*distance*0.07)).add(diagonal1.scale(0.025*distance));
-        p5=p1.add(height.scale(HEAD_HEIGHT*distance*0.07)).add(diagonal2.scale(0.025*distance));
-        p6=p2.add(height.scale(HEAD_HEIGHT*distance*0.07)).add(diagonal1.scale(-0.025*distance));
-        p7=p3.add(height.scale(HEAD_HEIGHT*distance*0.07)).add(diagonal2.scale(-0.025*distance));
+        p4=p0.add(height.scale(HEAD_HEIGHT*distance*0.07)).add(diagonal1.scale(0.02*distance));
+        p5=p1.add(height.scale(HEAD_HEIGHT*distance*0.07)).add(diagonal2.scale(0.02*distance));
+        p6=p2.add(height.scale(HEAD_HEIGHT*distance*0.07)).add(diagonal1.scale(-0.02*distance));
+        p7=p3.add(height.scale(HEAD_HEIGHT*distance*0.07)).add(diagonal2.scale(-0.02*distance));
         geometries.add(new Cube(p0, p1, p2, p3,p4,p5,p6,p7));
         p0=p4;
         p1=p5;
         p2=p6;
         p3=p7;
 
-        p4=p0.add(height.scale(HEAD_HEIGHT*distance*0.09)).add(diagonal1.scale(0.0125*distance));
-        p5=p1.add(height.scale(HEAD_HEIGHT*distance*0.09)).add(diagonal2.scale(0.0125*distance));
-        p6=p2.add(height.scale(HEAD_HEIGHT*distance*0.09)).add(diagonal1.scale(-0.0125*distance));
-        p7=p3.add(height.scale(HEAD_HEIGHT*distance*0.09)).add(diagonal2.scale(-0.0125*distance));
+        p4=p0.add(height.scale(HEAD_HEIGHT*distance*0.09)).add(diagonal1.scale(0.012*distance));
+        p5=p1.add(height.scale(HEAD_HEIGHT*distance*0.09)).add(diagonal2.scale(0.012*distance));
+        p6=p2.add(height.scale(HEAD_HEIGHT*distance*0.09)).add(diagonal1.scale(-0.012*distance));
+        p7=p3.add(height.scale(HEAD_HEIGHT*distance*0.09)).add(diagonal2.scale(-0.012*distance));
         geometries.add(new Cube(p0, p1, p2, p3,p4,p5,p6,p7));
         p0=p4;
         p1=p5;

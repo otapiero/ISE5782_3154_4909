@@ -21,7 +21,7 @@ public class RayTracerBasic extends RayTracerBase {
     private static final double MIN_CALC_COLOR_K = 0.001;
 
     private double distanceGlossinessAndReflectionGrid = 50;
-    private double sizeOfGrid=5;
+    private double sizeOfGrid=4;
     private int glossinessAndReflectionRaysNum = 16;
 
 
