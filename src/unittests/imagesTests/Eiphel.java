@@ -31,29 +31,31 @@ public class Eiphel {
         scene.setBackground(new Color (56, 40, 92));
 
         scene.lights.add(new SpotLight(new Color(800, 250, 125), new Point(0,20,-167),new Vector(0,-1,17)).setKl(4E-5).setKq(2E-7));
-        scene.lights.add(new DirectionalLight(new Color(100,100,50),new Vector(0, -1, -140)));
+        scene.lights.add(new PointLight(new Color(50, 100, 100), new Point(-10,100,-150)).setKl(4E-5).setKq(2E-7));
+        scene.lights.add(new SpotLight(new Color(250,250,250),new Point(-50, 1.5, -100),
+                new Point(-9.39,39.62,-150.6).subtract(new Point(-50, 1.5, -100))));
         scene.geometries.add(new EiphelTower(p[0],p[1],p[2],p[3]).setEmission(new Color(152,140,129)) //
                         .setMaterial(new Material().setKd(0.2).setKs(0.2).setShininess(30)),
                 new Plane(new Point(1,1,0),new Point(0,1,1),new Point(0,1,0)).setMaterial(
                         new Material().setKd(0.5).setKs(0.5).setShininess(60).setKr(new Double3(0.5))
                                 .setDiffusedAndGlossy(0.9)));
-
         ImageWriter imageWriter1 = new ImageWriter("EiphelProjectScene1", 1000, 1000);
         ImageWriter imageWriter2 = new ImageWriter("EiphelProjectScene2", 1000, 1000);
         ImageWriter imageWriter3 = new ImageWriter("EiphelProjectScene3", 1000, 1000);
 
         camera.moveCameraAndPointWiev(new Point(-50,20,-330),new Point(-10,9,-150),0).zoomCamera(0.3);
 
-        /*camera.setImageWriter(imageWriter2).setNumRays(1) //
-                .setRayTracer(new RayTracerBasic(scene)) //
-                .renderImage() //
-                .writeToImage(); //*/
-        camera.moveCameraAndPointWiev(new Point(-330,20,-50),new Point(-10,9,-150),0).zoomCamera(0.4);
-
-        camera.setImageWriter(imageWriter3).setNumRays(1) //
+        camera.setImageWriter(imageWriter2).setNumRays(1) //
                 .setRayTracer(new RayTracerBasic(scene)) //
                 .renderImage() //
                 .writeToImage(); //
+        camera.moveCameraAndPointWiev(new Point(-330,20,-50),new Point(-10,9,-150),0).zoomCamera(1.2);
+
+        camera.setImageWriter(imageWriter1).setNumRays(1) //
+                .setRayTracer(new RayTracerBasic(scene)) //
+                .renderImage() //
+                .writeToImage(); //
+
     }
 
 
