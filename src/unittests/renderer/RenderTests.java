@@ -7,6 +7,8 @@ import geometries.*;
 import primitives.*;
 import renderer.*;
 import scene.Scene;
+import xml.XNLDOM;
+
 import static java.awt.Color.*;
 
 /**
@@ -83,9 +85,8 @@ public class RenderTests {
 	 */
 	@Test
 	public void basicRenderXml() {
-		Scene scene = new Scene("XML Test scene");
-		// enter XML file name and parse from XML file into scene object
-		// ...
+		Scene scene = XNLDOM.ReadSceneFromXMLFile("XML test", System.getProperty("user.dir")+"\\src\\XML\\basicRenderTestTwoColors.xml");
+
 
 		Camera camera = new Camera(Point.ZERO, new Vector(0, 0, -1), new Vector(0, 1, 0)) //
 				.setVPDistance(100) //
