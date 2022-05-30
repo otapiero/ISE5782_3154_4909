@@ -4,6 +4,7 @@ import primitives.*;
 import primitives.Vector;
 
 import java.util.*;
+import java.util.stream.IntStream;
 
 import static primitives.Util.alignZero;
 import static primitives.Util.isZero;
@@ -305,7 +306,7 @@ public class Camera {
      *
      * @return the camera
      */
-    public Camera renderImage() {
+    /*public Camera renderImage() {
         if (imageWriter == null || this.rayTracer == null || distance == 0 || this.width == 0 || this.height == 0) {
             throw new MissingResourceException("the image writer or the ray tracer or the distance or the width or the height is not set", "Camera", "Camera");
         }
@@ -316,7 +317,51 @@ public class Camera {
             }
         }
         return this;
+    }*/
+
+    /**
+     * The function writes the pixels to the image
+     *
+     * @return the camera
+     */
+    public Camera renderImage() {
+        if (imageWriter == null || this.rayTracer == null || distance == 0 || this.width == 0 || this.height == 0) {
+            throw new MissingResourceException("the image writer or the ray tracer or the distance or the width or the height is not set", "Camera", "Camera");
+        }
+        IntStream.range(0, imageWriter.getNx()).parallel().forEach(i -> {
+            IntStream.range(0, imageWriter.getNy()).parallel().forEach(j -> {
+
+
+                imageWriter.writePixel(i, j, castRay(i, j));
+
+
+            });
+        });
+        return this;
     }
+
+    /**
+     * The function writes the pixels to the image
+     *
+     * @return the camera
+     */
+    /*public Camera renderImage() {
+        if (imageWriter == null || this.rayTracer == null || distance == 0 || this.width == 0 || this.height == 0) {
+            throw new MissingResourceException("the image writer or the ray tracer or the distance or the width or the height is not set", "Camera", "Camera");
+        }
+        int threadsCount = 4;
+        Pixel.initialize(imageWriter.getNx(),imageWriter.getNy() , 1);
+        while (threadsCount-- > 0) {
+            new Thread(() -> {
+                for (Pixel pixel = new Pixel(); pixel.nextPixel(); Pixel.pixelDone())
+                    imageWriter.writePixel(pixel.row, pixel.col, castRay(pixel.row, pixel.col));
+
+            }).start();
+        }
+        Pixel.waitToFinish();
+
+        return this;
+    }*/
 
     private Color castRay(int i, int j) {
         return rayTracer.traceRay(this.constructRays(imageWriter.getNx(), imageWriter.getNy(), i, j,numRays));
