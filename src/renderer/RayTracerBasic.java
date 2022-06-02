@@ -20,9 +20,9 @@ public class RayTracerBasic extends RayTracerBase {
     private static final int MAX_CALC_COLOR_LEVEL = 10;
     private static final double MIN_CALC_COLOR_K = 0.001;
 
-    private double distanceGlossinessAndReflectionGrid = 50;
+    private double distanceGlossinessAndReflectionGrid = 25;
     private double sizeOfGrid=4;
-    private int glossinessAndReflectionRaysNum = 16;
+    private int glossinessAndReflectionRaysNum = 36;
 
 
     /**
@@ -131,7 +131,7 @@ public class RayTracerBasic extends RayTracerBase {
         for (LightSource lightSource : scene.lights) {
             Vector l = lightSource.getL(gp.point);
             double nl = alignZero(n.dotProduct(l));
-            if (nl * nv > 0) { // sign(nl) == sing(nv)
+            if (nl * nv > 0) {
                 Double3 ktr = transparency(gp,l, n, nv,lightSource);
                 if ((! (ktr.product(k)).lowerThan(MIN_CALC_COLOR_K)) && (!(ktr.product(k)).equals(new Double3(MIN_CALC_COLOR_K)))) {
                     Color iL = lightSource.getIntensity(gp.point).scale(ktr);
@@ -213,7 +213,7 @@ public class RayTracerBasic extends RayTracerBase {
             if (refractedRays.size() != 0) {
                 for (Ray refractedRay : refractedRays) {
                     GeoPoint refractedPoint = findClosestIntersection(refractedRay);
-                    tempColor = color.add(refractedPoint == null ? primitives.Color.BLACK :
+                    tempColor = tempColor.add(refractedPoint == null ? primitives.Color.BLACK :
                             calcColor(refractedPoint, refractedRay, level - 1, kkt).scale(kt));
                 }
                 color = color.add(tempColor.reduce(refractedRays.size()));
