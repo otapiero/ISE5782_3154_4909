@@ -65,6 +65,14 @@ public class Camera {
     private int numRays=1, threadsCount = 3;
     double printInterval = 1;
 
+    public Camera setAdaptiveSuperSplmingFlag(boolean adaptiveSuperSplmingFlag) {
+        this.adaptiveSuperSplmingFlag = adaptiveSuperSplmingFlag;
+        return this;
+    }
+
+    private boolean adaptiveSuperSplmingFlag= true;
+    double superSpalmingLevel =3;
+
 
     public Camera setNumRays(int numRays) {
         this.numRays = numRays;
@@ -258,11 +266,10 @@ public class Camera {
      * @param nY the n y
      * @param j  the j
      * @param i  the
-     * @param numRays  the number of rays for anti-aliasing
      * @return ray ray
      */
 
-    public List<Ray> constructRays(int nX, int nY, int j, int i,int numRays) {
+    public List<Ray> constructRays(int nX, int nY, int j, int i) {
         if (numRays== 0) {
             throw new IllegalArgumentException("num of rays is 0");
         }
@@ -277,9 +284,7 @@ public class Camera {
             Point Pc = point.add(Vto.scale(distance));
             double Ry = alignZero(height / nY);
             double Rx = alignZero(width / nX);
-            // Xj = (j - (Nx -1)/2) * Rx
             double Xj = alignZero((j - ((nX - 1d) / 2d)) * Rx);
-            // Yi = -(i - (Ny - 1)/2) * Ry
             double Yi = alignZero(-(i - ((nY - 1d) / 2d)) * Ry);
             Point Pij = Pc;
             if (Xj != 0d) Pij = Pij.add(Vright.scale(Xj));
@@ -366,8 +371,35 @@ public class Camera {
     }
 
     private Color castRay(int i, int j) {
-        return rayTracer.traceRay(this.constructRays(imageWriter.getNx(), imageWriter.getNy(), i, j,numRays));
+        if (!adaptiveSuperSplmingFlag) {
+            return rayTracer.traceRay(this.constructRays(imageWriter.getNx(), imageWriter.getNy(), i, j));
+        }
+        return AdaptiveSuperSampling(imageWriter.getNx(), imageWriter.getNy(), i, j);
+
     }
+    private Color AdaptiveSuperSampling(int nX, int nY, int j, int i){
+
+
+        if(numRays == 1)
+            return rayTracer.traceRay(this.constructRays(imageWriter.getNx(), imageWriter.getNy(), i, j));
+        if (distance == 0)
+            throw new IllegalArgumentException("distance is 0");
+        Point Pc = point.add(Vto.scale(distance));
+        double Ry = alignZero(height / nY);
+        double Rx = alignZero(width / nX);
+        double Xj = alignZero((j - ((nX - 1d) / 2d)) * Rx);
+        double Yi = alignZero(-(i - ((nY - 1d) / 2d)) * Ry);
+        Point Pij = Pc;
+        if(Xj != 0d) Pij = Pij.add(Vright.scale(Xj)) ;
+        if(Yi != 0d) Pij = Pij.add(Vup.scale(Yi)) ;
+        if (Pij.equals(point)) throw new IllegalArgumentException("the point is the same as the camera");
+
+        double pY = alignZero(Ry / numRays);
+        double pX = alignZero(Rx / numRays);
+        return rayTracer.AdaptiveSuperSamplingRec(Pij, Rx, Ry, pX, pY,point,Vright, Vup,null);
+    }
+
+
 
 
     /**

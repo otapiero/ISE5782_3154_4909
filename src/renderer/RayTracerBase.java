@@ -30,4 +30,8 @@ public abstract class RayTracerBase {
      * @return - the discovered color
      */
     public abstract Color traceRay(List<Ray> ray);
+
+
+
+    protected abstract Color AdaptiveSuperSamplingRec(Point centerP, double Width, double Height, double minWidth, double minHeight, Point cameraLoc, Vector Vright, Vector Vup, List<Point> prePoints);
 }

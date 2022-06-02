@@ -73,7 +73,7 @@ public class ReflectionRefractionTests {
 				.setKl(0.00001).setKq(0.000005));
 
 		ImageWriter imageWriter = new ImageWriter("reflectionTwoSpheresMirrored", 500, 500);
-		camera.setImageWriter(imageWriter) //
+		camera.setImageWriter(imageWriter).setAdaptiveSuperSplmingFlag(true).setNumRays(4) //
 				.setRayTracer(new RayTracerBasic(scene)) //
 				.renderImage() //
 				.writeToImage();
@@ -95,12 +95,12 @@ public class ReflectionRefractionTests {
 				new Triangle(new Point(-150, -150, -115), new Point(-70, 70, -140), new Point(75, 75, -150)) //
 						.setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(60)), //
 				new Sphere(new Point(60, 50, -50), 30d).setEmission(new Color(BLUE)) //
-						.setMaterial(new Material().setKd(0).setKs(0).setShininess(30).setKt(new Double3(0.60)).setDiffusedAndGlossy(0.60)));
+						.setMaterial(new Material().setKd(0.2).setKs(0.2).setShininess(30).setKt(new Double3(0.60)).setDiffusedAndGlossy(0.9)));
 		scene.lights.add(new SpotLight(new Color(700, 400, 400), new Point(60, 50, 0), new Vector(0, 0, -1)) //
 				.setKl(4E-5).setKq(2E-7));
 
-		ImageWriter imageWriter = new ImageWriter("refractionShadow", 600, 600);
-		camera.setImageWriter(imageWriter).setNumRays(1)  //
+		ImageWriter imageWriter = new ImageWriter("refractionShadow1", 600, 600);
+		camera.setImageWriter(imageWriter).setNumRays(9).setAdaptiveSuperSplmingFlag(true)  //
 				.setRayTracer(new RayTracerBasic(scene)) //
 				.renderImage() //
 				.writeToImage();
