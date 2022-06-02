@@ -45,6 +45,7 @@ class Pixel {
 		pixels = 0;
 		printInterval = (int) (interval * 1000);
 		print = printInterval != 0;
+		last = -1l;
 	}
 
 	/**
@@ -116,7 +117,7 @@ class Pixel {
 			if (lastPrinted != percentage) {
 				last = current;
 				lastPrinted = percentage;
-				System.out.printf(PRINT_FORMAT, percentage / 10d);
+				System.out.println( percentage / 10d + "%");
 			}
 		}
 	}
