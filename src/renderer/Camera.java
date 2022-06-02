@@ -62,7 +62,9 @@ public class Camera {
      */
     RayTracerBase rayTracer;
 
-    private int numRays=1;
+    private int numRays=1, threadsCount = 3;
+    double printInterval = 1;
+
 
     public Camera setNumRays(int numRays) {
         this.numRays = numRays;
@@ -324,7 +326,7 @@ public class Camera {
      *
      * @return the camera
      */
-    public Camera renderImage() {
+    /*public Camera renderImage() {
         if (imageWriter == null || this.rayTracer == null || distance == 0 || this.width == 0 || this.height == 0) {
             throw new MissingResourceException("the image writer or the ray tracer or the distance or the width or the height is not set", "Camera", "Camera");
         }
@@ -338,19 +340,19 @@ public class Camera {
             });
         });
         return this;
-    }
+    }*/
 
     /**
      * The function writes the pixels to the image
      *
      * @return the camera
      */
-    /*public Camera renderImage() {
+    public Camera renderImage() {
         if (imageWriter == null || this.rayTracer == null || distance == 0 || this.width == 0 || this.height == 0) {
             throw new MissingResourceException("the image writer or the ray tracer or the distance or the width or the height is not set", "Camera", "Camera");
         }
-        int threadsCount = 4;
-        Pixel.initialize(imageWriter.getNx(),imageWriter.getNy() , 1);
+
+        Pixel.initialize(imageWriter.getNx(),imageWriter.getNy() , printInterval);
         while (threadsCount-- > 0) {
             new Thread(() -> {
                 for (Pixel pixel = new Pixel(); pixel.nextPixel(); Pixel.pixelDone())
@@ -361,7 +363,7 @@ public class Camera {
         Pixel.waitToFinish();
 
         return this;
-    }*/
+    }
 
     private Color castRay(int i, int j) {
         return rayTracer.traceRay(this.constructRays(imageWriter.getNx(), imageWriter.getNy(), i, j,numRays));
@@ -469,6 +471,15 @@ public class Camera {
 
     }
 
+    public Camera setMultithreading(int i) {
+        this.threadsCount = i;
+        return this;
+    }
+
+    public Camera setDebugPrint(double v) {
+        printInterval = v;
+        return this;
+    }
 }
 
 
