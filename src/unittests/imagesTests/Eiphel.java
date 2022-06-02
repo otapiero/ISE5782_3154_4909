@@ -45,13 +45,13 @@ public class Eiphel {
 
         camera.moveCameraAndPointWiev(new Point(-50,20,-330),new Point(-10,9,-150),0).zoomCamera(0.3);
 
-        camera.setImageWriter(imageWriter2).setNumRays(1) //
+        camera.setImageWriter(imageWriter2).setNumRays(2) //
                 .setRayTracer(new RayTracerBasic(scene)) //
                 .renderImage() //
                 .writeToImage(); //
         camera.moveCameraAndPointWiev(new Point(-330,20,-50),new Point(-10,9,-150),0).zoomCamera(1.2);
 
-        camera.setImageWriter(imageWriter1).setNumRays(1) //
+        camera.setImageWriter(imageWriter1).setNumRays(2) //
                 .setRayTracer(new RayTracerBasic(scene)) //
                 .renderImage() //
                 .writeToImage(); //
