@@ -20,7 +20,7 @@ public class RayTracerBasic extends RayTracerBase {
     private static final int MAX_CALC_COLOR_LEVEL = 10;
     private static final double MIN_CALC_COLOR_K = 0.001;
 
-    private double distanceGlossinessAndReflectionGrid = 25;
+    private double distanceGlossinessAndReflectionGrid = 50;
     private double sizeOfGrid=4;
     private int glossinessAndReflectionRaysNum = 36;
 
@@ -272,6 +272,16 @@ public class RayTracerBasic extends RayTracerBase {
 
         return color;
     }
+
+    /**
+     * Rays grid list.
+     *
+     * @param ray                      the ray
+     * @param direction                the direction
+     * @param glossynessAndDiffuseness the glossyness and diffuseness
+     * @param n                        the n
+     * @return the list
+     */
     List<Ray> raysGrid(Ray ray, int direction, double glossynessAndDiffuseness, Vector n){
         int numOfRowCol = isZero(glossynessAndDiffuseness)? 1: (int)Math.ceil(Math.sqrt(glossinessAndReflectionRaysNum));
         if (numOfRowCol == 1) return List.of(ray);

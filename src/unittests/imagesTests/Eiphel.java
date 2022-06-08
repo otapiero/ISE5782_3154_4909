@@ -43,15 +43,18 @@ public class Eiphel {
         ImageWriter imageWriter2 = new ImageWriter("EiphelProjectScene2", 1000, 1000);
         ImageWriter imageWriter3 = new ImageWriter("EiphelProjectScene3", 1000, 1000);
 
-        camera.moveCameraAndPointWiev(new Point(-50,20,-330),new Point(-10,9,-150),0).zoomCamera(0.3);
+      //  camera.moveCameraAndPointWiev(new Point(-50,20,-330),new Point(-10,9,-150),0).zoomCamera(0.3);
+        camera.moveCameraAndPointWiev(new Point(245,7,-188),new Point(-10,9,-150),0).zoomCamera(0.3);
+
 
       /*  camera.setImageWriter(imageWriter2).setNumRays(2) //
                 .setRayTracer(new RayTracerBasic(scene)) //
                 .renderImage() //
                 .writeToImage(); //*/
-        camera.moveCameraAndPointWiev(new Point(-330,20,-50),new Point(-10,9,-150),0).zoomCamera(1.2);
+       /* camera.moveCameraAndPointWiev(new Point(-330,20,-50)
+                ,new Point(-10,9,-150),0).zoomCamera(1.2);**/
 
-        camera.setImageWriter(imageWriter1).setNumRays(6).setAdaptiveSuperSplmingFlag(true) //
+        camera.setImageWriter(imageWriter2).setNumRays(1).setAdaptiveSuperSplmingFlag(false) //
                 .setRayTracer(new RayTracerBasic(scene)) //
                 .renderImage() //
                 .writeToImage(); //

@@ -63,22 +63,45 @@ public class Camera {
     RayTracerBase rayTracer;
 
     private int numRays=1, threadsCount = 3;
+    /**
+     * The Print interval.
+     */
     double printInterval = 1;
 
+    /**
+     * Sets adaptive super splming flag.
+     *
+     * @param adaptiveSuperSplmingFlag the adaptive super splming flag
+     * @return the adaptive super splming flag
+     */
     public Camera setAdaptiveSuperSplmingFlag(boolean adaptiveSuperSplmingFlag) {
         this.adaptiveSuperSplmingFlag = adaptiveSuperSplmingFlag;
         return this;
     }
 
     private boolean adaptiveSuperSplmingFlag= true;
+    /**
+     * The Super spalming level.
+     */
     double superSpalmingLevel =3;
 
 
+    /**
+     * Sets num rays.
+     *
+     * @param numRays the num rays
+     * @return the num rays
+     */
     public Camera setNumRays(int numRays) {
         this.numRays = numRays;
         return this;
     }
 
+    /**
+     * Gets num rays.
+     *
+     * @return the num rays
+     */
     public int getNumRays() {
         return this.numRays;
     }
@@ -258,18 +281,19 @@ public class Camera {
 
         return new Ray(point, Pij.subtract(point).normalize());
     }
+
     /**
      * The function gets the number of pixels there are, and also the i and j of a specific pixel in vieow plane
      * and returns ray through this pixel
      * use
+     *
      * @param nX the n x
      * @param nY the n y
      * @param j  the j
      * @param i  the
      * @return ray ray
      */
-
-    public List<Ray> constructRays(int nX, int nY, int j, int i) {
+    public List<Ray> constructRays(int nX, int nY, int i, int j) {
         if (numRays== 0) {
             throw new IllegalArgumentException("num of rays is 0");
         }
@@ -372,7 +396,7 @@ public class Camera {
 
     private Color castRay(int i, int j) {
         if (!adaptiveSuperSplmingFlag) {
-            return rayTracer.traceRay(this.constructRays(imageWriter.getNx(), imageWriter.getNy(), i, j));
+            return rayTracer.traceRay(this.constructRays(imageWriter.getNx(), imageWriter.getNy(), j, i));
         }
         return AdaptiveSuperSampling(imageWriter.getNx(), imageWriter.getNy(), i, j);
 
@@ -398,8 +422,6 @@ public class Camera {
         double pX = alignZero(Rx / numRays);
         return rayTracer.AdaptiveSuperSamplingRec(Pij, Rx, Ry, pX, pY,point,Vright, Vup,null);
     }
-
-
 
 
     /**
@@ -503,11 +525,23 @@ public class Camera {
 
     }
 
+    /**
+     * Sets multithreading.
+     *
+     * @param i the
+     * @return the multithreading
+     */
     public Camera setMultithreading(int i) {
         this.threadsCount = i;
         return this;
     }
 
+    /**
+     * Sets debug print.
+     *
+     * @param v the v
+     * @return the debug print
+     */
     public Camera setDebugPrint(double v) {
         printInterval = v;
         return this;
