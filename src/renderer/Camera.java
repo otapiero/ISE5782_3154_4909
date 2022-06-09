@@ -434,7 +434,7 @@ public class Camera {
 
         double pY = alignZero(Ry / numRays);
         double pX = alignZero(Rx / numRays);
-        return rayTracer.AdaptiveSuperSamplingRec(Pij, Rx, Ry, pX, pY,point,Vright, Vup,null);
+        return rayTracer.superSamplingAdaptiveRecursive(Pij, Rx, Ry, pX, pY,point,Vright, Vup,null);
     }
 
 

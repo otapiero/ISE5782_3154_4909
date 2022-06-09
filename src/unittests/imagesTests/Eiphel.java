@@ -54,10 +54,66 @@ public class Eiphel {
        /* camera.moveCameraAndPointWiev(new Point(-330,20,-50)
                 ,new Point(-10,9,-150),0).zoomCamera(1.2);**/
 
-        camera.setImageWriter(imageWriter2).setNumRays(1).setAdaptiveSuperSplmingFlag(false) //
+        camera.setImageWriter(imageWriter2).setNumRays(1).setAdaptiveSuperSplmingFlag(false).setMultithreading(3) //
                 .setRayTracer(new RayTracerBasic(scene)) //
                 .renderImage() //
                 .writeToImage(); //
+        /*
+        private Point[] pointsForAnimation = {
+            new Point(-239, 20, -84.32),
+            new Point(-243.93, 20, -129.05),
+            new Point(-245.7, 20, -167.22),
+            new Point(-239.32, 20, -217.72),
+            new Point(-224.33, 20, -261.59),
+            new Point(-197, 20, -308),
+            new Point(-159.26, 20, -347.91),
+            new Point(-122.1, 20, -374.2),
+            new Point(-71.58, 20, -395.77),
+            new Point(-11.68, 20, -406.17),
+            new Point(44.93, 20, -402.4),
+            new Point(103.62, 20, -383.67),
+            new Point(154.4, 20, -352.25),
+            new Point(196.83, 20, -308.54),
+            new Point(221.22, 20, -269.15),
+            new Point(245.07, 20, -188.29),
+            new Point(246.36, 20, -150.01),
+            new Point(226.94, 20, -63.35),
+            new Point(203.21, 20, -20.13),
+            new Point(160.53, 20, 27.25),
+            new Point(116.57, 20, 57.24),
+            new Point(71.56, 20, 75.93),
+            new Point(20.19, 20, 85.87),
+            new Point(-32.42, 20, 84.56),
+            new Point(-79.1, 20, 73.66),
+            new Point(-140.24, 20, 42.61),
+            new Point(-172.68, 20, 16.19),
+            new Point(-203.42, 20, -20.42),
+            new Point(215.91, 20, -40.66),
+            new Point(237.07, 20, -228.17),
+            new Point(239.22, 20, -99.87),};
+        int i = 0;
+*/
+        /*        for (Point point : pointsForAnimation)
+        {
+            //if (i > 0) Thread.sleep((long) 10000);
+            i++;
+            camera.moveCameraAndPointWiev(point,new Point(-10,9,-150),0);
+            ImageWriter imageWriter = new ImageWriter("EiphelProjectSceneAnimation"+i, 800, 800);
+            camera.setImageWriter(imageWriter).setNumRays(1).setAdaptiveSuperSplmingFlag(false).setMultithreading(3)
+                    .setDebugPrint(1)//
+                    .setRayTracer(new RayTracerBasic(scene)) //
+                    .renderImage() //
+                    .writeToImage(); //
+
+        }
+        camera.moveCameraAndPointWiev(new Point(-239, 20, -84.32),new Point(-10,9,-150),0).zoomCamera(0.34);
+
+        ImageWriter imageWriter = new ImageWriter("EiphelAfterProject1", 1000, 1000);
+        camera.setImageWriter(imageWriter).setNumRays(1).setAdaptiveSuperSplmingFlag(false).setMultithreading(3)
+                .setDebugPrint(1)//
+                .setRayTracer(new RayTracerBasic(scene)) //
+                .renderImage() //
+                .writeToImage(); //*/
 
     }
 

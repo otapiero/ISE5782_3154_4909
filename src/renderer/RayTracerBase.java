@@ -33,5 +33,5 @@ public abstract class RayTracerBase {
 
 
 
-    protected abstract Color AdaptiveSuperSamplingRec(Point centerP, double Width, double Height, double minWidth, double minHeight, Point cameraLoc, Vector Vright, Vector Vup, List<Point> prePoints);
+    protected abstract Color superSamplingAdaptiveRecursive(Point centerP, double Width, double Height, double minWidth, double minHeight, Point cameraLoc, Vector Vright, Vector Vup, List<Point> prePoints);
 }

@@ -108,7 +108,7 @@ public class RayTracerBasic extends RayTracerBase {
     }
 
     @Override
-    protected Color AdaptiveSuperSamplingRec(Point centerP, double Width, double Height, double minWidth, double minHeight, Point cameraLoc, Vector Vright, Vector Vup, List<Point> prePoints) {
+    protected Color superSamplingAdaptiveRecursive(Point centerP, double Width, double Height, double minWidth, double minHeight, Point cameraLoc, Vector Vright, Vector Vup, List<Point> prePoints) {
 
         if (Width < minWidth * 2 || Height < minHeight * 2) {
             return traceRay(List.of(new Ray(cameraLoc, centerP.subtract(cameraLoc))));
@@ -145,7 +145,7 @@ public class RayTracerBasic extends RayTracerBase {
 
         tempColor = primitives.Color.BLACK;
         for (Point center : nextCenterPList) {
-            tempColor = tempColor.add(AdaptiveSuperSamplingRec(center, Width/2,  Height/2,  minWidth,  minHeight ,  cameraLoc, Vright, Vup, cornersList));
+            tempColor = tempColor.add(superSamplingAdaptiveRecursive(center, Width/2,  Height/2,  minWidth,  minHeight ,  cameraLoc, Vright, Vup, cornersList));
         }
         return tempColor.reduce(nextCenterPList.size());
     }
