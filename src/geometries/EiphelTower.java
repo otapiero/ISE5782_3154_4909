@@ -7,6 +7,9 @@ import primitives.Vector;
 import java.util.*;
 import java.util.List;
 
+/**
+ * The type Eiphel tower. a geometry shape of eiphel tower
+ */
 public class EiphelTower extends Geometry {
     private List<Geometry> geometries;
 
@@ -16,6 +19,15 @@ public class EiphelTower extends Geometry {
     private static final double BASE_HEIGHT = 1/12d;
     private static final double HEAD_HEIGHT = 1.2;
     private Vector diagonal1, diagonal2,depth,height,width;
+
+    /**
+     * Instantiates a new Eiphel tower. by only four points in the ground of the tower
+     *
+     * @param p0 the p 0
+     * @param p1 the p 1
+     * @param p2 the p 2
+     * @param p3 the p 3
+     */
     public EiphelTower(Point p0, Point p1, Point p2, Point p3) {
         distance = p1.distance(p0);
         diagonal1 =p2.subtract(p0).normalize();
@@ -30,6 +42,14 @@ public class EiphelTower extends Geometry {
         pickTower(p.get(0),p.get(1),p.get(2),p.get(3));
     }
 
+    /**
+     *  Instantiates of the base of the tower
+     * @param p0 the p 0
+     * @param p1    the p 1
+     * @param p2    the p 2
+     * @param p3    the p 3
+     * @return   the list of points of the top of the base tower
+     */
     private List<Point> baseTower(Point p0, Point p1, Point p2, Point p3){
 
        Point p4,p5,p6,p7;
@@ -60,6 +80,14 @@ public class EiphelTower extends Geometry {
                 p.get(2).add(height.scale(baseHeight*-0.5)), p.get(3).add(height.scale(baseHeight*-0.5)),p4,p5,p6,p7));
         return List.of(p4,p5,p6,p7);
     }
+
+    /**
+     * Instantiates of the pick of the tower
+     * @param p0 the p 0
+     * @param p1    the p 1
+     * @param p2    the p 2
+     * @param p3    the p 3
+     */
     private void pickTower(Point p0, Point p1, Point p2, Point p3) {
         Point p4, p5, p6, p7;
         p4 = p0.add(height.scale(distance * 0.15)).add(diagonal1.scale(-0.055*distance));
@@ -91,7 +119,14 @@ public class EiphelTower extends Geometry {
 
     }
 
-
+    /**
+     * Instantiates of the head of the tower
+     * @param p0 the p 0
+     * @param p1    the p 1
+     * @param p2    the p 2
+     * @param p3    the p 3
+     * @return   the list of the points of the top of head
+     */
     private List<Point> headTower(Point p0, Point p1, Point p2, Point p3){
         Point p4,p5,p6,p7;
         p4=p0.add(height.scale(HEAD_HEIGHT*distance*0.07)).add(diagonal1.scale(0.02*distance));
@@ -130,6 +165,19 @@ public class EiphelTower extends Geometry {
         geometries.add(new Cube(p0, p1, p2, p3,p4,p5,p6,p7));
         return List.of(p4,p5,p6,p7);
     }
+
+    /**
+     * Instantiates of the legs of the tower
+     * @param p00   
+     * @param p11
+     * @param p22
+     * @param p33
+     * @param legDistance
+     * @param legHeight
+     * @param factorDiagonal
+     * @param x
+     * @return
+     */
     private List<Point> legsTower(Point p00, Point p11, Point p22, Point p33,double legDistance,double legHeight,double factorDiagonal,double x){
         Point center = p00.add(diagonal1.scale(p00.distance(p22)));
         Point p01, p02, p03, p10, p12, p13, p20, p21, p23, p30, p31, p32,p04,p05,p06,p07,p14,p15,p16,p17,p24,p25,p26,p27,p34,p35,p36,p37;

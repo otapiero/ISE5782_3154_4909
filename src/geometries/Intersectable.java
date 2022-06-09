@@ -30,6 +30,13 @@ public abstract class Intersectable {
         return findGeoIntersections(ray, Double.POSITIVE_INFINITY);
     }
 
+    /**
+     * Find geo intersections list.
+     *
+     * @param ray         the ray
+     * @param maxDistance the max distance
+     * @return the list
+     */
     public final List<GeoPoint> findGeoIntersections(Ray ray, double maxDistance) {
         return findGeoIntersectionsHelper(ray, maxDistance);
     }
@@ -37,9 +44,11 @@ public abstract class Intersectable {
     /**
      * Find geo intersections helper list.
      *
-     * @param ray the ray
+     * @param ray         the ray
+     * @param maxDistance the max distance
      * @return the list
-     */    protected abstract List<GeoPoint>
+     */
+    protected abstract List<GeoPoint>
     findGeoIntersectionsHelper(Ray ray, double maxDistance);
 
 

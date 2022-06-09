@@ -34,7 +34,16 @@ public class RayTracerBasic extends RayTracerBase {
         super(scene);
     }
 
-    private Double3 transparency(GeoPoint gp, Vector l, Vector n, double nv, LightSource lightSource)
+    /**
+     *  calculat the transparency of the geometry object
+     * @param gp geoPoint of the geometry object
+     * @param l  light direction
+     * @param n normal of the geometry object
+     * @param lightSource light source
+     * @return the transparency
+     */
+
+    private Double3 transparency(GeoPoint gp, Vector l, Vector n, LightSource lightSource)
     {
         Vector lightDirection = l.scale(-1);
 
@@ -54,8 +63,15 @@ public class RayTracerBasic extends RayTracerBase {
     }
 
 
-
-    private boolean unshaded(GeoPoint gp, Vector l, Vector n, double nv, LightSource lightSource)
+    /**
+     *  check if the point is in the shadow
+     * @param gp geoPoint of the geometry object
+     * @param l light direction
+     * @param n normal of the geometry object
+     * @param lightSource light source
+     * @return true if the point is not the shadow
+     */
+    private boolean unshaded(GeoPoint gp, Vector l, Vector n, LightSource lightSource)
     {
 
         Vector lightDirection = l.scale(-1);
@@ -133,6 +149,13 @@ public class RayTracerBasic extends RayTracerBase {
         }
         return tempColor.reduce(nextCenterPList.size());
     }
+
+    /**
+     *  check if the point is in the list
+     * @param pointsList list of points
+     * @param point point
+     * @return true if the point is in the list
+     */
     private boolean isInList(List<Point> pointsList, Point point) {
         for (Point tempPoint : pointsList) {
             if(point.equals(tempPoint))
@@ -169,6 +192,13 @@ public class RayTracerBasic extends RayTracerBase {
         return color;
     }*/
 
+    /**
+     *  calc the local effects
+     * @param gp geoPoint of the geometry object
+     * @param ray ray
+     * @param k the k of the geometry object
+     * @return color of the local effects
+     */
     private Color calcLocalEffects(GeoPoint gp, Ray ray,Double3 k) {
 
         Color color = gp.geometry.getEmission();
@@ -181,11 +211,11 @@ public class RayTracerBasic extends RayTracerBase {
             Vector l = lightSource.getL(gp.point);
             double nl = alignZero(n.dotProduct(l));
             if (nl * nv > 0) {
-                Double3 ktr = transparency(gp,l, n, nv,lightSource);
+                Double3 ktr = transparency(gp,l, n,lightSource);
                 if ((! (ktr.product(k)).lowerThan(MIN_CALC_COLOR_K)) && (!(ktr.product(k)).equals(new Double3(MIN_CALC_COLOR_K)))) {
                     Color iL = lightSource.getIntensity(gp.point).scale(ktr);
                     color = color.add(iL.scale(calcDiffusive(material, nl)),
-                            iL.scale(calcSpecular(material, n, l, nl, v)));
+                            iL.scale(calcSpecular(material, n, l, v)));
                 }
 
             }
@@ -193,6 +223,13 @@ public class RayTracerBasic extends RayTracerBase {
         return color;
     }
 
+    /**
+     * calc rays for reflection effect
+     * @param n the normal of the geometry object
+     * @param geoPoint geoPoint of the geometry object
+     * @param inRay the ray of the geometry object
+     * @return the reflection color
+     */
     private List<Ray> constructReflectedRays(Vector n, GeoPoint geoPoint, Ray inRay)
     {
         Vector v = inRay.getDir();
@@ -200,10 +237,24 @@ public class RayTracerBasic extends RayTracerBase {
         Vector reflected = v.subtract(n.scale(2*v.dotProduct(n))).normalize();
         return raysGrid( new Ray(geoPoint.point,reflected,n),1,geoPoint.geometry.getMaterial().getDiffusedAndGlossy(), n);
     }
+
+    /**
+     *  calc rays for refraction effect
+     * @param n the normal of the geometry object
+     * @param geoPoint geoPoint of the geometry object
+     * @param inRay the ray of the geometry object
+     * @return the refraction color
+     */
     private List<Ray> constructRefractedRays(Vector n, GeoPoint geoPoint, Ray inRay)
     {
         return raysGrid(new Ray(geoPoint.point, inRay.getDir(), n),-1,geoPoint.geometry.getMaterial().getDiffusedAndGlossy(), n);
     }
+
+    /**
+     * calc closest point of the intersection between the ray and geometrys object
+     * @param ray the ray
+     * @return the closest point of the intersection
+     */
     private GeoPoint findClosestIntersection(Ray ray)
     {
         List<GeoPoint> intersections= scene.geometries.findGeoIntersections(ray);
@@ -211,20 +262,49 @@ public class RayTracerBasic extends RayTracerBase {
         return ray.findClosestGeoPoint(intersections);
     }
 
-
+    /**
+     * calc the diffuse color
+     * @param material the material of the geometry object
+     * @param nl the dot product of the normal and the light vector
+     * @return the diffuse color
+     */
     private Double3  calcDiffusive(Material material, double nl) {
         return material.kD.scale(Math.abs(nl));
     }
-    private Double3 calcSpecular(Material material, Vector n, Vector l, double nl, Vector v) {
+
+    /**
+     * calc the specular color
+     * @param material the material of the geometry object
+     * @param n the normal of the geometry object
+     * @param l the light vector
+     * @param v the view vector
+     * @return the specular color
+     */
+    private Double3 calcSpecular(Material material, Vector n, Vector l, Vector v) {
         Vector r = calcVectorR(l, n);
         return material.kS.scale(Math.pow(Math.max(0, v.scale(-1).dotProduct(r)), material.nShininess));
     }
+
+    /**
+     *  calc the vector r
+     * @param v the view vector
+     * @param n the normal of the geometry object
+     * @return the vector r
+     */
     private Vector calcVectorR(Vector v, Vector n) {
         double a = v.dotProduct(n);
         Vector b = n.scale(a);
-        Vector c = v.subtract(b);
         return v.subtract(n.scale(2*v.dotProduct(n))).normalize();
     }
+
+    /**
+     * calc  color of a pixel by the ray recrusively
+     * @param gp the geoPoint of the geometry object
+     * @param ray   the ray
+     * @param level the level of the ray
+     * @param k the k of the geometry object
+     * @return  the color of the pixel
+     */
 
     private Color calcColor(GeoPoint gp,Ray ray,int level, Double3 k ) {
         Color color = calcLocalEffects(gp,ray,k);
@@ -232,11 +312,25 @@ public class RayTracerBasic extends RayTracerBase {
         return 1 == level ? color : color.add(calcGlobalEffects(gp, ray, level, k));
     }
 
+    /**
+     * calc  color of a pixel by the ray
+     * @param gp    the geoPoint of the geometry object
+     * @param ray   the ray
+     * @return  the global effects
+     */
     private Color calcColor(GeoPoint gp, Ray ray)
     {
         return calcColor(gp, ray, MAX_CALC_COLOR_LEVEL, new Double3(1d)).add(scene.ambientLight.getIntensity());
     }
 
+    /**
+     * calc the  global effects
+     * @param gp    the geoPoint of the geometry object
+     * @param ray   the ray
+     * @param level the level of the recursion
+     * @param k the k of the geometry object
+     * @return the color of global effects
+     */
     private Color calcGlobalEffects(GeoPoint gp,primitives.Ray ray, int level, Double3 k)
     {
         Color color = Color.BLACK;
@@ -274,13 +368,13 @@ public class RayTracerBasic extends RayTracerBase {
     }
 
     /**
-     * Rays grid list.
+     * list of rays for a grid around the ray
      *
-     * @param ray                      the ray
-     * @param direction                the direction
+     * @param ray the ray
+     * @param direction  the direction of the ray(reflection or refraction)
      * @param glossynessAndDiffuseness the glossyness and diffuseness
-     * @param n                        the n
-     * @return the list
+     * @param n  the normal of the geometry object
+     * @return the list of rays
      */
     List<Ray> raysGrid(Ray ray, int direction, double glossynessAndDiffuseness, Vector n){
         int numOfRowCol = isZero(glossynessAndDiffuseness)? 1: (int)Math.ceil(Math.sqrt(glossinessAndReflectionRaysNum));

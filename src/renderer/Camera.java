@@ -4,7 +4,6 @@ import primitives.*;
 import primitives.Vector;
 
 import java.util.*;
-import java.util.stream.IntStream;
 
 import static primitives.Util.alignZero;
 import static primitives.Util.isZero;
@@ -289,8 +288,8 @@ public class Camera {
      *
      * @param nX the n x
      * @param nY the n y
-     * @param j  the j
      * @param i  the
+     * @param j  the j
      * @return ray ray
      */
     public List<Ray> constructRays(int nX, int nY, int i, int j) {
@@ -394,14 +393,29 @@ public class Camera {
         return this;
     }
 
+    /**
+     * the function returns the color of the pixel by creating a ray through the pixel and casting it
+     * @param i the i of the pixel
+     * @param j the j of the pixel
+     * @return the color of the pixel (i,j)
+     */
     private Color castRay(int i, int j) {
         if (!adaptiveSuperSplmingFlag) {
             return rayTracer.traceRay(this.constructRays(imageWriter.getNx(), imageWriter.getNy(), j, i));
         }
-        return AdaptiveSuperSampling(imageWriter.getNx(), imageWriter.getNy(), i, j);
+        return superSamplingAdaptive(imageWriter.getNx(), imageWriter.getNy(), i, j);
 
     }
-    private Color AdaptiveSuperSampling(int nX, int nY, int j, int i){
+
+    /**
+     * the function creates a super sampling of the pixel and returns the color of the pixel
+     * @param nX the n x
+     * @param nY the n y
+     * @param j the j of the pixel
+     * @param i the i of the pixel
+     * @return the color of the pixel (i,j)
+     */
+    private Color superSamplingAdaptive(int nX, int nY, int j, int i){
 
 
         if(numRays == 1)
@@ -490,6 +504,11 @@ public class Camera {
         }
         return this;
     }
+
+    /**
+     *  rotate the camera by the angle around the vector Vto (the vector from the camera to the point of view)
+     * @param angle the angle
+     */
     // rotate the camera by the angle around the vector Vto (the vector from the camera to the point of view)
     private void rotateCameraByVto(double angle) {
         double radians = Math.toRadians(angle);

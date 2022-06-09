@@ -18,7 +18,8 @@ public class Plane  extends Geometry {
 
     /**
      * Returns the Point
-     * @return
+     *
+     * @return p 0
      */
     public Point getP0() {
         return p0;
@@ -26,7 +27,8 @@ public class Plane  extends Geometry {
 
     /**
      * Returns the Normal to point
-     * @return
+     *
+     * @return normal
      */
     public Vector getNormal() {
         return normal;
@@ -34,7 +36,8 @@ public class Plane  extends Geometry {
 
     /**
      * A constructor that receives the point and the vector
-     * @param point of the plane
+     *
+     * @param point  of the plane
      * @param vector vector normal to the plane
      */
     public Plane(Point point, Vector vector) {
@@ -44,6 +47,7 @@ public class Plane  extends Geometry {
 
     /**
      * A constructor that gets three points and calculates the vector
+     *
      * @param point1 First point
      * @param point2 Second point
      * @param point3 Third point

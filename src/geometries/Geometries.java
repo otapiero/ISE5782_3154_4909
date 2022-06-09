@@ -6,7 +6,13 @@ import primitives.Ray;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * The type Geometries.
+ */
 public class Geometries extends Intersectable{
+    /**
+     * The Geometries linked list.
+     */
     List<Intersectable> geometriesLinkedList;
 //class for set of geometries object
 
@@ -18,7 +24,8 @@ public class Geometries extends Intersectable{
     }
 
     /**
-     *  constructor of Geometries to do a new list with some geometries shapes
+     * constructor of Geometries to do a new list with some geometries shapes
+     *
      * @param geometries some geometries shapes
      */
     public Geometries(Intersectable... geometries){
@@ -47,6 +54,12 @@ public class Geometries extends Intersectable{
         }
         return result;
     }
+
+    /**
+     * Add.
+     *
+     * @param geometries the geometries
+     */
     public void add(Intersectable... geometries){
         for (var i:
              geometries) {

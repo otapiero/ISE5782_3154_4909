@@ -1,5 +1,8 @@
 package primitives;
 
+/**
+ * The type Vector.
+ */
 public class Vector extends Point {
     /**
      * constructor of vector by a given double3
@@ -113,6 +116,11 @@ public class Vector extends Point {
     }
 
 
+    /**
+     * Find random orthogonal vector.
+     *
+     * @return the vector
+     */
     public Vector findRandomOrthogonal() {
         double x = this.getX();
         double y = this.getY();
